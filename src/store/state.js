@@ -1,5 +1,7 @@
 const state = {
-    books: []
+    books: [],
+    authors: [],
+    genres: []
 }
 
 export default state;

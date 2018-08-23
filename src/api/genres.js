@@ -2,8 +2,8 @@ import {rootUrl} from './urls'
 import axios from 'axios'
 
 export default {
-    fetchBooks() {
-        const url = `${rootUrl}/api/books`;
+    fetchGenres() {
+        const url = `${rootUrl}/api/genres`;
 
         return new Promise((resolve, reject) => {
             axios.get(url)
