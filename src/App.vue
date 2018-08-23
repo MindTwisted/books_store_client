@@ -34,6 +34,7 @@ export default {
 @import '~bulma/sass/elements/title';
 @import '~bulma/sass/elements/tag';
 @import '~bulma/sass/elements/content';
+@import '~bulma/sass/elements/button';
 @import '~bulma/sass/elements/form';
 @import '~bulma/sass/components/navbar';
 @import '~bulma/sass/components/card';

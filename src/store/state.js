@@ -1,7 +1,12 @@
 const state = {
     books: [],
     authors: [],
-    genres: []
+    genres: [],
+    bookFilters: {
+        title: '',
+        author: '',
+        genre: ''
+    }
 }
 
 export default state;

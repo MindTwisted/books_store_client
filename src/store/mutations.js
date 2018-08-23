@@ -7,6 +7,13 @@ const mutations = {
     },
     setGenres(state, genres) {
         state.genres = genres;
+    },
+    resetBookFilters(state) {
+        state.bookFilters = {
+            title: '',
+            author: '',
+            genre: ''
+        };
     }
 }
 

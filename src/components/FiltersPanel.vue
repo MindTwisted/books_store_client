@@ -2,13 +2,12 @@
     <nav class="panel">
 
         <p class="panel-heading">
-            Filter books
+            Find books
         </p>
 
         <div class="panel-block">
             <p class="control">
-                <input v-model="filters.title" 
-                       v-on:input="handleFilters"
+                <input v-model="bookFilters.title" 
                        class="input" 
                        type="text" 
                        placeholder="Enter title">
@@ -17,24 +16,32 @@
     
         <div class="panel-block">
             <div class="select is-fullwidth">
-                <select v-model="filters.author">
+                <select v-model="bookFilters.author">
                     <option value="">Select author</option>
                     <option v-for="author in authors" 
                             v-bind:key="author.id"
-                            value="author.id">{{ author.name }}</option>
+                            v-bind:value="author.id">{{ author.name }}</option>
                 </select>
             </div>
         </div>
 
         <div class="panel-block">
             <div class="select is-fullwidth">
-                <select v-model="filters.genre">
+                <select v-model="bookFilters.genre">
                     <option value="">Select genre</option>
                     <option v-for="genre in genres" 
                             v-bind:key="genre.id"
-                            value="genre.id">{{ genre.name }}</option>
+                            v-bind:value="genre.id">{{ genre.name }}</option>
                 </select>
             </div>
+        </div>
+
+        <div v-if="isFiltered" 
+             class="panel-block">
+            <button v-on:click="resetBookFilters" 
+                    class="button is-danger is-outlined is-fullwidth">
+                Reset
+            </button>
         </div>
 
     </nav>
@@ -45,25 +52,22 @@ import Vuex from 'vuex'
 
 export default {
     name: 'FiltersPanel',
-    data() {
-        return {
-            filters: {
-                title: '',
-                author: '',
-                genre: ''
-            }
-        }
-    },
     computed: {
         ...Vuex.mapState([
             'authors',
-            'genres'
-        ])
+            'genres',
+            'bookFilters'
+        ]),
+        isFiltered() {
+            return !!this.bookFilters.title ||
+                   !!this.bookFilters.author ||
+                   !!this.bookFilters.genre;
+        }
     },
     methods: {
-        handleFilters() {
-            this.$root.$emit('filter-books', this.filters);
-        }
+        ...Vuex.mapMutations([
+            'resetBookFilters'
+        ])
     }
 }
 </script>
