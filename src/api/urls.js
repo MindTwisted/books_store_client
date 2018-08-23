@@ -1,0 +1,1 @@
+export const rootUrl = 'http://xenial.test/books-store/server';
