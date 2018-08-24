@@ -15,11 +15,11 @@
       <div class="navbar-menu">
         <div class="navbar-end">
 
-          <!-- <template v-if="!auth.isLoggedIn">
-            <a v-on:click="setLoginModal" class="navbar-item">Login</a>
+          <template v-if="!auth.isLoggedIn">
+            <!-- <a v-on:click="setLoginModal" class="navbar-item">Login</a> -->
             <a v-on:click="setRegisterModal" class="navbar-item">Register</a>
           </template>
-          <template v-else>
+          <!-- <template v-else>
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
                 {{ user.first_name + ' ' + user.last_name }}
@@ -44,10 +44,19 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
+
 export default {
   name: 'Navbar',
-  props: {
-    
+  computed: {
+    ...Vuex.mapState([
+      'auth'
+    ]),
+  },
+  methods: {
+    ...Vuex.mapMutations([
+      'setRegisterModal'
+    ])
   }
 }
 </script>

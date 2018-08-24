@@ -8,6 +8,11 @@
     <div class="app__content">
       <router-view/>
     </div>
+
+    <notifications group="messages" 
+                   position="bottom right"/>
+
+    <register-modal v-if="registerModal.isVisible"></register-modal>
     
   </div>
 </template>
@@ -15,16 +20,24 @@
 <script>
 import Vuex from 'vuex'
 import Navbar from '@/components/Navbar.vue'
+import RegisterModal from '@/components/RegisterModal.vue'
 
 export default {
   name: 'App',
   components: {
-    'navbar': Navbar
+    'navbar': Navbar,
+    'register-modal': RegisterModal
   },
   mounted() {
     this.getBooks();
     this.getAuthors();
     this.getGenres();
+  },
+  computed: {
+    ...Vuex.mapState([
+      'loginModal',
+      'registerModal'
+    ])
   },
   methods: {
     ...Vuex.mapActions([
@@ -49,10 +62,12 @@ export default {
 @import '~bulma/sass/elements/content';
 @import '~bulma/sass/elements/button';
 @import '~bulma/sass/elements/form';
+@import '~bulma/sass/elements/other';
 @import '~bulma/sass/components/navbar';
 @import '~bulma/sass/components/card';
 @import '~bulma/sass/components/panel';
 @import '~bulma/sass/components/breadcrumb';
+@import '~bulma/sass/components/modal';
 
 .app {
   font-family: 'Raleway', sans-serif;

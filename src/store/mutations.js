@@ -14,7 +14,19 @@ const mutations = {
             author: '',
             genre: ''
         };
-    }
+    },
+    setRegisterModal(state) {
+        state.registerModal.isVisible = true;
+    },
+    removeRegisterModal(state) {
+        state.registerModal.isVisible = false;
+    },
+    setLoginModal(state) {
+        state.loginModal.isVisible = true;
+    },
+    removeLoginModal(state) {
+        state.loginModal.isVisible = false;
+},
 }
 
 export default mutations;

@@ -6,6 +6,16 @@ const state = {
         title: '',
         author: '',
         genre: ''
+    },
+    auth: {
+        isLoggedIn: false,
+        token: ''
+    },
+    registerModal: {
+        isVisible: false
+    },
+    loginModal: {
+        isVisible: false
     }
 }
 
