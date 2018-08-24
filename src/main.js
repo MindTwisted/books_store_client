@@ -7,9 +7,30 @@ import router from './router'
 import store from './store/index'
 
 const AUTH_TOKEN = localStorage.getItem('token');
+
 if (AUTH_TOKEN) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${AUTH_TOKEN}`;
 }
+
+axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  const response = error.response;
+
+  if (response.status == 401) {
+    store.commit('removeAuth');
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('email');
+    localStorage.removeItem('role');
+    localStorage.removeItem('discount');
+
+    router.push('/');
+  }
+
+  return Promise.reject(error);
+});
 
 Vue.config.productionTip = false
 

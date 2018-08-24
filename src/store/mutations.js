@@ -44,6 +44,13 @@ const mutations = {
             role: '',
             discount: ''
         }
+    },
+    updateUser(state, data) {
+        state.auth = {
+            ...state.auth,
+            name: data.name,
+            email: data.email
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import api from '../api'
+import router from '../router'
 
 const actions = {
     getBooks(context) {
@@ -128,6 +129,8 @@ const actions = {
                     type: 'success',
                     text: response.data.message.text
                 });
+
+                router.push('/');
             })
             .catch(error => {
                 Vue.notify({
@@ -137,6 +140,39 @@ const actions = {
                     text: error.data.message.text
                 });
             });
+    },
+    updateUser(context, data) {
+        return new Promise((resolve, reject) => {
+            api.updateUser(data)
+                .then(response => {
+                    context.commit('updateUser', {
+                        name: data.name,
+                        email: data.email
+                    });
+
+                    localStorage.setItem('name', data.name);
+                    localStorage.setItem('email', data.email);
+
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
+                });
+        });
     }
 }
 

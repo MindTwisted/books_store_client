@@ -26,11 +26,12 @@
               </a>
 
               <div class="navbar-dropdown">
-                <!-- <router-link to="/orders" class="navbar-item">
-                  Orders
-                </router-link> -->
+                <router-link to="/profile" class="navbar-item">
+                  Profile
+                </router-link>
 
                 <hr class="navbar-divider">
+
                 <a v-on:click="logoutUser" 
                    class="navbar-item">
                   Logout
