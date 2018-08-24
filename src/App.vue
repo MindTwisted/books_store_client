@@ -13,6 +13,7 @@
                    position="bottom right"/>
 
     <register-modal v-if="registerModal.isVisible"></register-modal>
+    <login-modal v-if="loginModal.isVisible"></login-modal>
     
   </div>
 </template>
@@ -21,12 +22,14 @@
 import Vuex from 'vuex'
 import Navbar from '@/components/Navbar.vue'
 import RegisterModal from '@/components/RegisterModal.vue'
+import LoginModal from '@/components/LoginModal.vue'
 
 export default {
   name: 'App',
   components: {
     'navbar': Navbar,
-    'register-modal': RegisterModal
+    'register-modal': RegisterModal,
+    'login-modal': LoginModal
   },
   mounted() {
     this.getBooks();
@@ -36,7 +39,8 @@ export default {
   computed: {
     ...Vuex.mapState([
       'loginModal',
-      'registerModal'
+      'registerModal',
+      'loginModal'
     ])
   },
   methods: {

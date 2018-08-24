@@ -15,28 +15,29 @@
       <div class="navbar-menu">
         <div class="navbar-end">
 
-          <template v-if="!auth.isLoggedIn">
-            <!-- <a v-on:click="setLoginModal" class="navbar-item">Login</a> -->
+          <template v-if="!isAuth">
+            <a v-on:click="setLoginModal" class="navbar-item">Login</a>
             <a v-on:click="setRegisterModal" class="navbar-item">Register</a>
           </template>
-          <!-- <template v-else>
+          <template v-else>
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link">
-                {{ user.first_name + ' ' + user.last_name }}
+                {{ auth.name }}
               </a>
 
               <div class="navbar-dropdown">
-                <router-link to="/orders" class="navbar-item">
+                <!-- <router-link to="/orders" class="navbar-item">
                   Orders
-                </router-link>
+                </router-link> -->
 
                 <hr class="navbar-divider">
-                <a v-on:click="logoutUser" class="navbar-item">
+                <a v-on:click="logoutUser" 
+                   class="navbar-item">
                   Logout
                 </a>
               </div>
             </div>
-          </template> -->
+          </template>
         </div>
       </div>
     </div>
@@ -52,11 +53,18 @@ export default {
     ...Vuex.mapState([
       'auth'
     ]),
+    ...Vuex.mapGetters([
+      'isAuth'
+    ]),
   },
   methods: {
     ...Vuex.mapMutations([
-      'setRegisterModal'
-    ])
+      'setRegisterModal',
+      'setLoginModal'
+    ]),
+    ...Vuex.mapActions([
+      'logoutUser'
+    ]),
   }
 }
 </script>

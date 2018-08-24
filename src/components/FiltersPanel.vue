@@ -38,7 +38,7 @@
 
         <div v-if="isFiltered" 
              class="panel-block">
-            <button v-on:click="resetBookFilters" 
+            <button v-on:click="removeBookFilters" 
                     class="button is-danger is-outlined is-fullwidth">
                 Reset
             </button>
@@ -66,7 +66,7 @@ export default {
     },
     methods: {
         ...Vuex.mapMutations([
-            'resetBookFilters'
+            'removeBookFilters'
         ])
     }
 }

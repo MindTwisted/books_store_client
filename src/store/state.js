@@ -8,8 +8,11 @@ const state = {
         genre: ''
     },
     auth: {
-        isLoggedIn: false,
-        token: ''
+        token: localStorage.getItem('token') || '',
+        name: localStorage.getItem('name') || '',
+        email: localStorage.getItem('email') || '',
+        role: localStorage.getItem('role') || '',
+        discount: localStorage.getItem('discount') || ''
     },
     registerModal: {
         isVisible: false

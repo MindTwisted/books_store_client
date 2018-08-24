@@ -8,7 +8,7 @@ const mutations = {
     setGenres(state, genres) {
         state.genres = genres;
     },
-    resetBookFilters(state) {
+    removeBookFilters(state) {
         state.bookFilters = {
             title: '',
             author: '',
@@ -26,7 +26,25 @@ const mutations = {
     },
     removeLoginModal(state) {
         state.loginModal.isVisible = false;
-},
+    },
+    setAuth(state, data) {
+        state.auth = {
+            token: data.token,
+            name: data.name,
+            email: data.email,
+            role: data.role,
+            discount: data.discount
+        }
+    },
+    removeAuth(state) {
+        state.auth = {
+            token: '',
+            name: '',
+            email: '',
+            role: '',
+            discount: ''
+        }
+    }
 }
 
 export default mutations;

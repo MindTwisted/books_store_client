@@ -33,6 +33,13 @@ const getters = {
         return (id) => {
             return state.books.filter(book => +book.id === +id)[0];
         } 
+    },
+    isAuth(state) {
+        return state.auth.token && 
+               state.auth.name && 
+               state.auth.email && 
+               state.auth.role && 
+               state.auth.discount;
     }
 }
 
