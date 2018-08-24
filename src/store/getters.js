@@ -31,7 +31,7 @@ const getters = {
     },
     getBookById(state) {
         return (id) => {
-            return state.books.filter(book => +book.id === +id);
+            return state.books.filter(book => +book.id === +id)[0];
         } 
     }
 }

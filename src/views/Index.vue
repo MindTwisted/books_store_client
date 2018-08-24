@@ -9,39 +9,52 @@
         </div>
 
         <div class="column is-four-fifths-desktop is-three-fifths-tablet">
-          <div class="columns is-multiline index__content">
+          <div class="columns is-multiline">
 
-            <div v-for="book in books" v-bind:key='book.id' class="column is-one-third-widescreen is-half-tablet">
-              <div class="shopItem">
-                <div class="card">
-                  <div class="card-image">
-                    <router-link v-bind:to="'/books/' + book.id">
-                      <figure class="image is-9by16">
-                        <img v-bind:src="rootUrl + '/' + book.image_url" v-bind:alt="book.title">
-                      </figure>
-                    </router-link>
-                  </div>
-                  <div class="card-content">
-                    <div class="media">
-                      <div class="media-content">
-                        <p class="title is-4">
-                          <router-link v-bind:to="'/books/' + book.id" class="has-text-black">
-                            {{ book.title }}
-                          </router-link>
-                        </p>
-                        <p class="subtitle is-6">{{ book.authors.map(a => a.name).join(', ') }}</p>
-                      </div>
+            <div v-for="book in books" 
+                 v-bind:key='book.id' 
+                 class="column is-one-third-widescreen is-half-tablet">
+              <div class="card">
+                <div class="card-image">
+                  <router-link v-bind:to="'/books/' + book.id">
+                    <figure class="image is-9by16 has-text-centered">
+                      <img v-bind:src="rootUrl + '/' + book.image_url" 
+                           v-bind:alt="book.title">
+                    </figure>
+                  </router-link>
+                </div>
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-content">
+                      <p class="title is-4">
+                        <router-link v-bind:to="'/books/' + book.id" class="has-text-black">
+                          {{ book.title }}
+                        </router-link>
+                      </p>
+                      <p v-if="book.authors.length > 0" 
+                         class="subtitle is-6">{{ book.authors.map(a => a.name).join(', ') }}</p>
                     </div>
-                    <div class="tags">
-                      <span v-for="genre in book.genres" v-bind:key="genre.id" class="tag is-primary">{{ genre.name }}</span>
-                    </div>
                   </div>
-                  <!-- <router-link v-bind:to="'/books/' + book.id">
-                                
-                              </router-link> -->
+                  <div class="tags">
+                    <span v-for="genre in book.genres" v-bind:key="genre.id" class="tag is-primary">{{ genre.name }}</span>
+                  </div>
+                  <div class="content">
+                    <p class="subtitle index__price">
+                      <template v-if="book.discount > 0">
+                        <del class="has-text-grey-light is-size-6">{{ book.price }}</del>
+                        <strong class="is-size-4 has-text-weight-light">
+                          {{ priceWithDiscount(book.price, book.discount) | price }}
+                        </strong>
+                      </template>
+                      <strong v-else class="is-size-4 has-text-weight-light">
+                        {{ book.price | price }}
+                      </strong>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+            
             <div v-if="books.length === 0" class="column has-text-centered">
               There are no books yet.
             </div>
@@ -75,18 +88,9 @@ export default {
     ])
   },
   methods: {
-    ...Vuex.mapActions([
-      'getBooks',
-      'getAuthors',
-      'getGenres'
-    ]),
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getBooks();
-      vm.getAuthors();
-      vm.getGenres();
-    });
+    priceWithDiscount(price, discount) {
+      return (price - price * (discount / 100)).toFixed(2);
+    }
   }
 }
 </script>
@@ -99,12 +103,18 @@ export default {
     }
 }
 
-.shopItem {
+.card {
   figure.image {
-    text-align: center;
-
     img {
       max-height: 400px;
+    }
+  }
+}
+
+.index {
+  &__price {
+    del {
+      margin-right: 0.5rem;
     }
   }
 }

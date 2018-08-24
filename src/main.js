@@ -5,6 +5,10 @@ import store from './store/index'
 
 Vue.config.productionTip = false
 
+Vue.filter('price', function (value) {
+  return `${value}$`;
+})
+
 new Vue({
   router,
   store,

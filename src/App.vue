@@ -13,12 +13,25 @@
 </template>
 
 <script>
+import Vuex from 'vuex'
 import Navbar from '@/components/Navbar.vue'
 
 export default {
   name: 'App',
   components: {
     'navbar': Navbar
+  },
+  mounted() {
+    this.getBooks();
+    this.getAuthors();
+    this.getGenres();
+  },
+  methods: {
+    ...Vuex.mapActions([
+      'getBooks',
+      'getAuthors',
+      'getGenres'
+    ]),
   }
 }
 </script>
@@ -39,6 +52,7 @@ export default {
 @import '~bulma/sass/components/navbar';
 @import '~bulma/sass/components/card';
 @import '~bulma/sass/components/panel';
+@import '~bulma/sass/components/breadcrumb';
 
 .app {
   font-family: 'Raleway', sans-serif;
