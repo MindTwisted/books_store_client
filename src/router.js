@@ -36,6 +36,29 @@ export default new Router({
       name: 'cart',
       component: () => import('./views/Cart.vue'),
       beforeEnter: checkAuth
+    },
+    {
+      path: '/orders',
+      name: 'orders',
+      component: () => import('./views/Orders.vue'),
+      beforeEnter: checkAuth
+    },
+    {
+      path: '/orders/:id',
+      name: 'orderDetails',
+      component: () => import('./views/OrderDetails.vue'),
+      beforeEnter: (to, from, next) => {
+        if (store.getters.isAuth) {
+          if (store.state.orders.length > 0) {
+            next();
+          } else {
+            next('/orders');
+          }
+          
+        } else {
+          next('/');
+        }
+      }
     }
   ]
 })

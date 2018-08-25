@@ -20,7 +20,9 @@ const state = {
     loginModal: {
         isVisible: false
     },
-    cart: []
+    cart: [],
+    paymentTypes: [],
+    orders: []
 }
 
 export default state;

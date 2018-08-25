@@ -48,6 +48,24 @@ const getters = {
         return (id) => {
             return state.cart.findIndex(item => item.book.id == id) !== -1;
         }
+    },
+    getOrdersCount(state) {
+        return state.orders.length;
+    },
+    getOrdersTotalPrice(state) {
+        return state.orders.reduce((acc, curr) => {
+            return +acc + +curr.total_price;
+        }, 0).toFixed(2);
+    },
+    getOrdersTotalDiscount(state) {
+        return state.orders.reduce((acc, curr) => {
+            return +acc + +curr.total_discount;
+        }, 0).toFixed(2);
+    },
+    getOrderById(state) {
+        return (id) => {
+            return state.orders.filter(order => +order.id === +id)[0];
+        } 
     }
 }
 

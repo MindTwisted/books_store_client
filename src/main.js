@@ -39,6 +39,10 @@ Vue.filter('price', function (value) {
   return `${value}$`;
 })
 
+Vue.filter('percent', function (value) {
+  return `${value}%`;
+})
+
 Vue.use(Vuelidate)
 Vue.use(Notifications)
 

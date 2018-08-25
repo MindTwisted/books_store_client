@@ -89,6 +89,7 @@ const actions = {
                 });
 
                 context.dispatch('getCart');
+                context.dispatch('getPaymentTypes');
 
                 localStorage.setItem('token', token);
                 localStorage.setItem('name', data.name);
@@ -263,6 +264,57 @@ const actions = {
                     type: 'success',
                     text: response.data.message.text
                 });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    getPaymentTypes(context) {
+        api.fetchPaymentTypes()
+            .then(response => {
+                context.commit('setPaymentTypes', response.data.message.data);
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    addOrder(context, paymentType) {
+        api.addOrder(paymentType)
+            .then(response => {
+                context.commit('removeCart');
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/orders');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    getOrders(context) {
+        api.fetchOrders()
+            .then(response => {
+                context.commit('setOrders', response.data.message.data);
             })
             .catch(error => {
                 Vue.notify({

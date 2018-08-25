@@ -38,6 +38,7 @@ export default {
 
     if (this.isAuth) {
       this.getCart();
+      this.getPaymentTypes();
     }
   },
   computed: {
@@ -55,7 +56,8 @@ export default {
       'getBooks',
       'getAuthors',
       'getGenres',
-      'getCart'
+      'getCart',
+      'getPaymentTypes'
     ]),
   }
 }
@@ -76,6 +78,7 @@ export default {
 @import '~bulma/sass/elements/form';
 @import '~bulma/sass/elements/other';
 @import '~bulma/sass/elements/box';
+@import '~bulma/sass/elements/table';
 @import '~bulma/sass/components/navbar';
 @import '~bulma/sass/components/card';
 @import '~bulma/sass/components/panel';
@@ -84,6 +87,7 @@ export default {
 
 .app {
   font-family: 'Raleway', sans-serif;
+  padding-bottom: 7rem;
 
   &__content {
     margin-top: 2rem;

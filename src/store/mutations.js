@@ -2,6 +2,14 @@ function clearCart(state) {
     state.cart = [];
 }
 
+function clearPaymentTypes(state) {
+    state.paymentTypes = [];
+}
+
+function clearOrders(state) {
+    state.orders = [];
+}
+
 const mutations = {
     setBooks(state, books) {
         state.books = books;
@@ -50,6 +58,8 @@ const mutations = {
         };
 
         clearCart(state);
+        clearPaymentTypes(state);
+        clearOrders(state);
     },
     updateUser(state, data) {
         state.auth = {
@@ -60,6 +70,9 @@ const mutations = {
     },
     setCart(state, cart) {
         state.cart = cart;
+    },
+    removeCart(state) {
+        clearCart(state);
     },
     deleteFromCart(state, bookId) {
         state.cart = state.cart.filter(item => {
@@ -90,6 +103,12 @@ const mutations = {
                 image_url: book.image_url
             }
         });
+    },
+    setPaymentTypes(state, paymentTypes) {
+        state.paymentTypes = paymentTypes;
+    },
+    setOrders(state, orders) {
+        state.orders = orders;
     }
 }
 
