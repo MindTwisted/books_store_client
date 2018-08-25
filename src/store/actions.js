@@ -88,6 +88,8 @@ const actions = {
                     discount: data.discount
                 });
 
+                context.dispatch('getCart');
+
                 localStorage.setItem('token', token);
                 localStorage.setItem('name', data.name);
                 localStorage.setItem('email', data.email);
@@ -173,6 +175,103 @@ const actions = {
                     reject();
                 });
         });
+    },
+    getCart(context) {
+        api.fetchCart()
+            .then(response => {
+                context.commit('setCart', response.data.message.data);
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    deleteFromCart(context, bookId) {
+        api.deleteFromCart(bookId)
+            .then(response => {
+                context.commit('deleteFromCart', bookId);
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    updateInCart(context, data) {
+        return new Promise((resolve, reject) => {
+            api.updateInCart(data)
+                .then(response => {
+                    context.commit('updateInCart', data);
+
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
+                });
+        });
+    },
+    fakeAddToCart(context) {
+        context.commit('setLoginModal');
+
+        Vue.notify({
+            group: 'messages',
+            title: 'Warning',
+            type: 'warn',
+            text: 'Нou must be logged-in to make a purchase.'
+        });
+    },
+    addToCart(context, data) {
+        api.addToCart(data)
+            .then(response => {
+                context.commit('addToCart', {
+                    id: response.data.message.data.id,
+                    bookId: data.bookId,
+                    count: data.count
+                });
+                
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
     }
 }
 

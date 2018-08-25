@@ -161,7 +161,7 @@ export default {
                 this.repeatPassword = '';
 
                 this.$v.$reset();
-            });
+            }).catch(() => false);
         }
     }
 }

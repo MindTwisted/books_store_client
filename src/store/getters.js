@@ -40,6 +40,14 @@ const getters = {
                state.auth.email && 
                state.auth.role && 
                state.auth.discount;
+    },
+    getCartCount(state) {
+        return state.cart.length;
+    },
+    isInCart(state) {
+        return (id) => {
+            return state.cart.findIndex(item => item.book.id == id) !== -1;
+        }
     }
 }
 

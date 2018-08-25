@@ -19,6 +19,7 @@ axios.interceptors.response.use(function (response) {
 
   if (response.status == 401) {
     store.commit('removeAuth');
+    store.commit('setLoginModal');
 
     localStorage.removeItem('token');
     localStorage.removeItem('name');

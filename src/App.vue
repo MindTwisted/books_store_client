@@ -35,19 +35,27 @@ export default {
     this.getBooks();
     this.getAuthors();
     this.getGenres();
+
+    if (this.isAuth) {
+      this.getCart();
+    }
   },
   computed: {
     ...Vuex.mapState([
       'loginModal',
       'registerModal',
       'loginModal'
+    ]),
+    ...Vuex.mapGetters([
+      'isAuth'
     ])
   },
   methods: {
     ...Vuex.mapActions([
       'getBooks',
       'getAuthors',
-      'getGenres'
+      'getGenres',
+      'getCart'
     ]),
   }
 }
@@ -67,6 +75,7 @@ export default {
 @import '~bulma/sass/elements/button';
 @import '~bulma/sass/elements/form';
 @import '~bulma/sass/elements/other';
+@import '~bulma/sass/elements/box';
 @import '~bulma/sass/components/navbar';
 @import '~bulma/sass/components/card';
 @import '~bulma/sass/components/panel';

@@ -50,6 +50,15 @@
                     {{ book.price | price }}
                   </strong>
                 </p>
+                <button v-if="!isAuth" 
+                        v-on:click="fakeAddToCart" 
+                        class="button is-success is-outlined">Add To Cart</button>
+                <template v-else>
+                  <button v-if="!isInCart(book.id)" 
+                          v-on:click="handleAddToCart(book.id)" 
+                          class="button is-success is-outlined">Add To Cart</button>
+                  <span v-else class="tag is-info is-medium">In Cart</span>
+                </template>
               </div>
             </div>
           </div>
@@ -75,15 +84,27 @@ export default {
   },
   computed: {
     ...Vuex.mapGetters([
-      'getBookById'
+      'getBookById',
+      'isAuth',
+      'isInCart'
     ]),
     book() {
       return this.getBookById(this.$route.params.id);
     }
   },
   methods: {
+    ...Vuex.mapActions([
+      'fakeAddToCart',
+      'addToCart'
+    ]),
     priceWithDiscount(price, discount) {
       return (price - price * (discount / 100)).toFixed(2);
+    },
+    handleAddToCart(id) {
+      this.addToCart({
+        bookId: id,
+        count: 1
+      });
     }
   }
 }

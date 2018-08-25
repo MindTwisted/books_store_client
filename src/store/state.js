@@ -19,7 +19,8 @@ const state = {
     },
     loginModal: {
         isVisible: false
-    }
+    },
+    cart: []
 }
 
 export default state;

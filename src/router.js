@@ -30,6 +30,12 @@ export default new Router({
       name: 'profile',
       component: () => import('./views/Profile.vue'),
       beforeEnter: checkAuth
+    },
+    {
+      path: '/cart',
+      name: 'cart',
+      component: () => import('./views/Cart.vue'),
+      beforeEnter: checkAuth
     }
   ]
 })
