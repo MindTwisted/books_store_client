@@ -84,13 +84,14 @@ export default {
 @import '~bulma/sass/components/panel';
 @import '~bulma/sass/components/breadcrumb';
 @import '~bulma/sass/components/modal';
+@import '~bulma/sass/components/menu';
 
 .app {
   font-family: 'Raleway', sans-serif;
   padding-bottom: 7rem;
 
   &__content {
-    margin-top: 2rem;
+    padding-top: 5rem;
   }
 }
 

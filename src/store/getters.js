@@ -35,10 +35,19 @@ const getters = {
         } 
     },
     isAuth(state) {
-        return state.auth.token && 
+        return state.auth.id && 
+               state.auth.token && 
                state.auth.name && 
                state.auth.email && 
                state.auth.role && 
+               state.auth.discount;
+    },
+    isAdmin(state) {
+        return state.auth.id && 
+               state.auth.token && 
+               state.auth.name && 
+               state.auth.email && 
+               state.auth.role === 'admin' && 
                state.auth.discount;
     },
     getCartCount(state) {
@@ -46,7 +55,7 @@ const getters = {
     },
     isInCart(state) {
         return (id) => {
-            return state.cart.findIndex(item => item.book.id == id) !== -1;
+            return state.cart.findIndex(item => +item.book.id === +id) !== -1;
         }
     },
     getOrdersCount(state) {
@@ -66,6 +75,16 @@ const getters = {
         return (id) => {
             return state.orders.filter(order => +order.id === +id)[0];
         } 
+    },
+    getOrdersByUser(state) {
+        return (id) => {
+            return state.orders.filter(order => +order.user.id === +id);
+        }
+    },
+    getUserById(state) {
+        return (id) => {
+            return state.users.filter(user => +user.id === +id)[0];
+        }
     }
 }
 

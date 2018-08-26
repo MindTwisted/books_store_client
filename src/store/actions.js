@@ -81,6 +81,7 @@ const actions = {
                 const data = response.data.message.data;
 
                 context.commit('setAuth', {
+                    id: data.id,
                     token: token,
                     name: data.name,
                     email: data.email,
@@ -91,6 +92,7 @@ const actions = {
                 context.dispatch('getCart');
                 context.dispatch('getPaymentTypes');
 
+                localStorage.setItem('id', data.id);
                 localStorage.setItem('token', token);
                 localStorage.setItem('name', data.name);
                 localStorage.setItem('email', data.email);
@@ -120,6 +122,7 @@ const actions = {
             .then(response => {
                 context.commit('removeAuth');
 
+                localStorage.removeItem('id');
                 localStorage.removeItem('token');
                 localStorage.removeItem('name');
                 localStorage.removeItem('email');
@@ -144,11 +147,11 @@ const actions = {
                 });
             });
     },
-    updateUser(context, data) {
+    updateCurrentUser(context, data) {
         return new Promise((resolve, reject) => {
-            api.updateUser(data)
+            api.updateCurrentUser(data)
                 .then(response => {
-                    context.commit('updateUser', {
+                    context.commit('updateCurrentUser', {
                         name: data.name,
                         email: data.email
                     });
@@ -177,6 +180,35 @@ const actions = {
                 });
         });
     },
+    updateUser(context, data) {
+        api.updateUser(data)
+            .then(response => {
+                context.commit('updateUser', data);
+
+                if (+context.state.auth.id === +data.id) {
+                    localStorage.setItem('name', data.name);
+                    localStorage.setItem('email', data.email);
+                    localStorage.setItem('discount', data.discount);
+                }
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/users');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    }, 
     getCart(context) {
         api.fetchCart()
             .then(response => {
@@ -315,6 +347,20 @@ const actions = {
         api.fetchOrders()
             .then(response => {
                 context.commit('setOrders', response.data.message.data);
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    getUsers(context) {
+        api.fetchUsers()
+            .then(response => {
+                context.commit('setUsers', response.data.message.data);
             })
             .catch(error => {
                 Vue.notify({

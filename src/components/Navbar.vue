@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
     <div class="container">
       <div class="navbar-brand">
         <router-link class="navbar-item" to="/">
@@ -29,8 +29,11 @@
               </a>
 
               <div class="navbar-dropdown">
-                <router-link to="/orders" class="navbar-item">
+                <router-link v-if="!isAdmin" to="/orders" class="navbar-item">
                   Orders
+                </router-link>
+                <router-link v-if="isAdmin" to="/dashboard" class="navbar-item">
+                  Dashboard
                 </router-link>
                 <router-link to="/profile" class="navbar-item">
                   Profile
@@ -71,6 +74,7 @@ export default {
     ]),
     ...Vuex.mapGetters([
       'isAuth',
+      'isAdmin',
       'getCartCount'
     ]),
   },

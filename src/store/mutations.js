@@ -10,6 +10,10 @@ function clearOrders(state) {
     state.orders = [];
 }
 
+function clearUsers(state) {
+    state.users = [];
+}
+
 const mutations = {
     setBooks(state, books) {
         state.books = books;
@@ -41,6 +45,7 @@ const mutations = {
     },
     setAuth(state, data) {
         state.auth = {
+            id: data.id,
             token: data.token,
             name: data.name,
             email: data.email,
@@ -50,6 +55,7 @@ const mutations = {
     },
     removeAuth(state) {
         state.auth = {
+            id: '',
             token: '',
             name: '',
             email: '',
@@ -60,13 +66,34 @@ const mutations = {
         clearCart(state);
         clearPaymentTypes(state);
         clearOrders(state);
+        clearUsers(state);
     },
-    updateUser(state, data) {
+    updateCurrentUser(state, data) {
         state.auth = {
             ...state.auth,
             name: data.name,
             email: data.email
         }
+    },
+    updateUser(state, data) {
+        if (+state.auth.id === +data.id) {
+            state.auth = {
+                ...state.auth,
+                name: data.name,
+                email: data.email,
+                discount: data.discount
+            };
+        }
+
+        state.users = state.users.map(user => {
+            if (+user.id === +data.id) {
+                user.name = data.name;
+                user.email = data.email;
+                user.discount = data.discount;
+            }
+
+            return user;
+        });
     },
     setCart(state, cart) {
         state.cart = cart;
@@ -109,6 +136,9 @@ const mutations = {
     },
     setOrders(state, orders) {
         state.orders = orders;
+    },
+    setUsers(state, users) {
+        state.users = users;
     }
 }
 

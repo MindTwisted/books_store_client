@@ -6,11 +6,19 @@ import store from '@/store'
 Vue.use(Router)
 
 const checkAuth = (to, from, next) => {
-  if (store.getters.isAuth) {
-    next();
-  } else {
-    next('/');
-  }
+  if (!store.getters.isAuth) {
+    return next('/');
+  } 
+
+  return next();
+};
+
+const checkAdmin = (to, from, next) => {
+  if (!store.getters.isAdmin) {
+    return next('/');
+  } 
+
+  return next();
 };
 
 export default new Router({
@@ -41,24 +49,83 @@ export default new Router({
       path: '/orders',
       name: 'orders',
       component: () => import('./views/Orders.vue'),
-      beforeEnter: checkAuth
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.isAuth) {
+          return next('/');
+        } 
+
+        if (store.getters.isAdmin) {
+          return next('/dashboard');
+        } 
+
+        return next();
+      }
     },
     {
       path: '/orders/:id',
       name: 'orderDetails',
       component: () => import('./views/OrderDetails.vue'),
       beforeEnter: (to, from, next) => {
-        if (store.getters.isAuth) {
-          if (store.state.orders.length > 0) {
-            next();
-          } else {
-            next('/orders');
-          }
-          
-        } else {
-          next('/');
-        }
+        if (!store.getters.isAuth) {
+          return next('/');
+        } 
+
+        if (store.getters.isAdmin) {
+          return next('/dashboard');
+        } 
+
+        if (store.state.orders.length === 0) {
+          return next('/orders');
+        } 
+
+        return next();
       }
+    },
+    {
+      path: '/dashboard',
+      component: () => import ('./views/dashboard/Index.vue'),
+      beforeEnter: checkAdmin,
+      children: [
+        {
+          path: '',
+          component: () => import ('./views/dashboard/dashboard/Dashboard.vue'),
+        },
+        {
+          path: 'users',
+          component: () => import ('./views/dashboard/users/Users.vue'),
+        },
+        {
+          path: 'users/:id/orders',
+          component: () => import ('./views/dashboard/users/Orders.vue'),
+        },
+        {
+          path: 'users/:id/edit',
+          component: () => import ('./views/dashboard/users/Edit.vue'),
+          beforeEnter: (to, from, next) => {
+            if (store.state.users.length === 0) {
+              return next('/dashboard/users');
+            }
+
+            return next();
+          }
+        },
+        {
+          path: 'orders',
+          component: () => import ('./views/dashboard/orders/Orders.vue'),
+        },
+        {
+          path: 'books',
+          component: () => import ('./views/dashboard/books/Books.vue'),
+        },
+        {
+          path: 'genres',
+          component: () => import ('./views/dashboard/genres/Genres.vue'),
+        },
+        {
+          path: 'authors',
+          component: () => import ('./views/dashboard/authors/Authors.vue'),
+        }
+      ]
     }
   ]
 })

@@ -58,12 +58,37 @@ export default {
                 });
         });
     },
-    updateUser(data) {
+    updateCurrentUser(data) {
         return new Promise((resolve, reject) => {
             axios.put(
                 `${rootUrl}/api/users/`,
                 `name=${data.name}&email=${data.email}&password=${data.password}`
                 )
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
+    updateUser(data) {
+        return new Promise((resolve, reject) => {
+            axios.put(
+                `${rootUrl}/api/users/${data.id}`,
+                `name=${data.name}&email=${data.email}&discount=${data.discount}`
+                )
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
+    fetchUsers() {
+        return new Promise((resolve, reject) => {
+            axios.get(`${rootUrl}/api/users/`)
                 .then(response => {
                     resolve(response);
                 })

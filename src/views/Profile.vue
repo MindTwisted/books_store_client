@@ -143,7 +143,7 @@ export default {
     },
     methods: {
         ...Vuex.mapActions([
-            'updateUser'
+            'updateCurrentUser'
         ]),
         handleUpdateUser() {
             this.$v.$touch();
@@ -152,7 +152,7 @@ export default {
                 return false;
             }
 
-            this.updateUser({
+            this.updateCurrentUser({
                 name: this.name,
                 email: this.email,
                 password: this.password

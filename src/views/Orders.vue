@@ -158,7 +158,7 @@ export default {
     methods: {
         ...Vuex.mapActions(['getOrders']),
         formatStatus(value) {
-            return value.split(/[\_\-\s]/).map(item => {
+            return value.split(/[_\-\s]/).map(item => {
                 return item[0].toUpperCase() + item.slice(1);
             }).join(' ');
         }

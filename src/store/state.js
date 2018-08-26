@@ -8,6 +8,7 @@ const state = {
         genre: ''
     },
     auth: {
+        id: localStorage.getItem('id') || '',
         token: localStorage.getItem('token') || '',
         name: localStorage.getItem('name') || '',
         email: localStorage.getItem('email') || '',
@@ -22,7 +23,8 @@ const state = {
     },
     cart: [],
     paymentTypes: [],
-    orders: []
+    orders: [],
+    users: []
 }
 
 export default state;
