@@ -103,12 +103,12 @@ const mutations = {
     },
     deleteFromCart(state, bookId) {
         state.cart = state.cart.filter(item => {
-            return item.book.id != bookId;
+            return +item.book.id !== +bookId;
         });
     },
     updateInCart(state, data) {
         state.cart = state.cart.map(item => {
-            if (item.book.id == data.bookId) {
+            if (+item.book.id === +data.bookId) {
                 item.count = data.count;
             }
 
@@ -116,7 +116,7 @@ const mutations = {
         });
     },
     addToCart(state, data) {
-        const book = state.books.find(book => book.id == data.bookId);
+        const book = state.books.find(book => +book.id === +data.bookId);
         
         state.cart.push({
             count: data.count,
@@ -136,6 +136,18 @@ const mutations = {
     },
     setOrders(state, orders) {
         state.orders = orders;
+    },
+    deleteOrder(state, id) {
+        state.orders = state.orders.filter(order => +order.id !== +id);
+    },
+    updateOrder(state, data) {
+        state.orders = state.orders.map(order => {
+            if (+order.id === +data.id) {
+                order.status = data.status;
+            }
+
+            return order;
+        });
     },
     setUsers(state, users) {
         state.users = users;

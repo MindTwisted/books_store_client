@@ -114,6 +114,21 @@ export default new Router({
           component: () => import ('./views/dashboard/orders/Orders.vue'),
         },
         {
+          path: 'orders/:id',
+          component: () => import ('./views/dashboard/orders/Details.vue'),
+        },
+        {
+          path: 'orders/:id/edit',
+          component: () => import ('./views/dashboard/orders/Edit.vue'),
+          beforeEnter: (to, from, next) => {
+            if (store.state.orders.length === 0) {
+              return next('/dashboard/orders');
+            }
+
+            return next();
+          }
+        },
+        {
           path: 'books',
           component: () => import ('./views/dashboard/books/Books.vue'),
         },

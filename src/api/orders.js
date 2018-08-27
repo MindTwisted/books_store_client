@@ -26,5 +26,30 @@ export default {
                     reject(error.response);
                 });
         });
+    },
+    deleteOrder(id) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`${rootUrl}/api/orders/${id}`)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
+    updateOrder(data) {
+        return new Promise((resolve, reject) => {
+            axios.put(
+                `${rootUrl}/api/orders/${data.id}`,
+                `status=${data.status}`
+                )
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
     }
 }

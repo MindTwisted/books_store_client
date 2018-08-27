@@ -93,7 +93,7 @@ export default {
     name: 'Orders',
     data() {
         return {
-            sort: ''
+            sort: 'CREATED_DESC'
         }
     },
     beforeRouteEnter(to, from, next) {

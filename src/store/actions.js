@@ -357,6 +357,50 @@ const actions = {
                 });
             });
     },
+    deleteOrder(context, id) {
+        api.deleteOrder(id)
+            .then(response => {
+                context.commit('deleteOrder', id);
+                
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    updateOrder(context, data) {
+        api.updateOrder(data)
+            .then(response => {
+                context.commit('updateOrder', data);
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/orders');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
     getUsers(context) {
         api.fetchUsers()
             .then(response => {
