@@ -137,6 +137,21 @@ export default new Router({
           component: () => import ('./views/dashboard/genres/Genres.vue'),
         },
         {
+          path: 'genres/:id/edit',
+          component: () => import ('./views/dashboard/genres/Edit.vue'),
+          beforeEnter: (to, from, next) => {
+            if (store.state.genres.length === 0) {
+              return next('/dashboard/genres');
+            }
+
+            return next();
+          }
+        },
+        {
+          path: 'genres/add',
+          component: () => import ('./views/dashboard/genres/Add.vue'),
+        },
+        {
           path: 'authors',
           component: () => import ('./views/dashboard/authors/Authors.vue'),
         }

@@ -34,6 +34,11 @@ const getters = {
             return state.books.filter(book => +book.id === +id)[0];
         } 
     },
+    getGenreById(state) {
+        return (id) => {
+            return state.genres.filter(genre => +genre.id === +id)[0];
+        } 
+    },
     isAuth(state) {
         return state.auth.id && 
                state.auth.token && 

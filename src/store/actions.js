@@ -45,6 +45,79 @@ const actions = {
                 });
             });
     },
+    deleteGenre(context, id) {
+        api.deleteGenre(id)
+            .then(response => {
+                context.commit('deleteGenre', id);
+                
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    addGenre(context, name) {
+        api.addGenre(name)
+            .then(response => {
+                context.commit('addGenre', {
+                    id: response.data.message.data.id,
+                    name: name
+                });
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/genres');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    updateGenre(context, data) {
+        api.updateGenre(data)
+            .then(response => {
+                context.commit('updateGenre', {
+                    id: data.id,
+                    name: data.name
+                });
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/genres');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
     registerUser(context, data) {
         api.registerUser(data)
             .then(response => {
