@@ -1,5 +1,7 @@
 <template>
-    <div class="loginModal">
+    <div v-on:keyup.enter="handleLoginUser"
+         v-on:keyup.esc="removeLoginModal" 
+         class="loginModal">
         <div class="modal is-active">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -16,6 +18,7 @@
                         <div class="control">
                             <input v-model.trim="$v.email.$model" 
                                    v-bind:class="{ input:true, 'is-danger':$v.email.$error }" 
+                                   ref="email"
                                    type="text" 
                                    placeholder="Email">
                         </div>
@@ -80,6 +83,9 @@ export default {
             required,
             minLength: minLength(6)
         }
+    },
+    mounted() {
+        this.$refs.email.focus()
     },
     methods: {
         ...Vuex.mapMutations([

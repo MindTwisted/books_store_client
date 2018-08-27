@@ -31,6 +31,79 @@ const actions = {
                 });
             });
     },
+    deleteAuthor(context, id) {
+        api.deleteAuthor(id)
+            .then(response => {
+                context.commit('deleteAuthor', id);
+                
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    addAuthor(context, name) {
+        api.addAuthor(name)
+            .then(response => {
+                context.commit('addAuthor', {
+                    id: response.data.message.data.id,
+                    name: name
+                });
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/authors');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    updateAuthor(context, data) {
+        api.updateAuthor(data)
+            .then(response => {
+                context.commit('updateAuthor', {
+                    id: data.id,
+                    name: data.name
+                });
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/authors');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
     getGenres(context) {
         api.fetchGenres()
             .then(response => {
@@ -129,6 +202,7 @@ const actions = {
                 });
 
                 context.commit('removeRegisterModal');
+                context.commit('setLoginModal');
             })
             .catch(error => {
                 Vue.notify({

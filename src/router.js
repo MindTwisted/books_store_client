@@ -154,7 +154,22 @@ export default new Router({
         {
           path: 'authors',
           component: () => import ('./views/dashboard/authors/Authors.vue'),
-        }
+        },
+        {
+          path: 'authors/:id/edit',
+          component: () => import ('./views/dashboard/authors/Edit.vue'),
+          beforeEnter: (to, from, next) => {
+            if (store.state.authors.length === 0) {
+              return next('/dashboard/authors');
+            }
+
+            return next();
+          }
+        },
+        {
+          path: 'authors/add',
+          component: () => import ('./views/dashboard/authors/Add.vue'),
+        },
       ]
     }
   ]

@@ -1,5 +1,7 @@
 <template>
-    <div class="registerModal">
+    <div v-on:keyup.enter="handleRegisterUser" 
+         v-on:keyup.esc="removeRegisterModal"
+         class="registerModal">
         <div class="modal is-active">
             <div class="modal-background"></div>
             <div class="modal-card">
@@ -16,6 +18,7 @@
                         <div class="control">
                             <input v-model.trim="$v.name.$model" 
                                    v-bind:class="{ input:true, 'is-danger':$v.name.$error }" 
+                                   ref="name"
                                    type="text" 
                                    placeholder="Name">
                         </div>
@@ -126,6 +129,9 @@ export default {
             required,
             sameAsPassword: sameAs('password')
         }
+    },
+    mounted() {
+        this.$refs.name.focus()
     },
     methods: {
         ...Vuex.mapMutations([

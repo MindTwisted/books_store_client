@@ -21,11 +21,56 @@ const mutations = {
     setAuthors(state, authors) {
         state.authors = authors;
     },
+    deleteAuthor(state, id) {
+        state.authors = state.authors.filter(author => +author.id !== +id);
+
+        state.books = state.books.map(book => {
+            const authorId = book.authors.findIndex(author => +author.id === +id);
+
+            if (authorId !== -1) {
+                book.authors.splice(authorId, 1);
+            }
+
+            return book;
+        });
+    },
+    addAuthor(state, data) {
+        state.authors.push(data);
+    },
+    updateAuthor(state, data) {
+        state.authors = state.authors.map(author => {
+            if (+author.id === +data.id) {
+                author.name = data.name;
+            }
+
+            return author;
+        });
+
+        state.books = state.books.map(book => {
+            const authorId = book.authors.findIndex(author => +author.id === +data.id);
+
+            if (authorId !== -1) {
+                book.authors[authorId].name = data.name;
+            }
+
+            return book;
+        });
+    },
     setGenres(state, genres) {
         state.genres = genres;
     },
     deleteGenre(state, id) {
         state.genres = state.genres.filter(genre => +genre.id !== +id);
+
+        state.books = state.books.map(book => {
+            const genreId = book.genres.findIndex(genre => +genre.id === +id);
+
+            if (genreId !== -1) {
+                book.genres.splice(genreId, 1);
+            }
+
+            return book;
+        });
     },
     addGenre(state, data) {
         state.genres.push(data);

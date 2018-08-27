@@ -34,6 +34,11 @@ const getters = {
             return state.books.filter(book => +book.id === +id)[0];
         } 
     },
+    getAuthorById(state) {
+        return (id) => {
+            return state.authors.filter(author => +author.id === +id)[0];
+        } 
+    },
     getGenreById(state) {
         return (id) => {
             return state.genres.filter(genre => +genre.id === +id)[0];

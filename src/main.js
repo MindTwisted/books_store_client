@@ -51,3 +51,11 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
+
+/*
+  TODO:
+  1) add books with full authors, genres, images functionality;
+  2) add charts on dashboard index;
+  3) add loaders;
+  4) add REST API documentation;
+*/
