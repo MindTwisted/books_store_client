@@ -18,6 +18,46 @@ const mutations = {
     setBooks(state, books) {
         state.books = books;
     },
+    deleteBook(state, id) {
+        state.books = state.books.filter(book => +book.id !== +id);
+
+        state.cart = state.cart.filter(cartItem => +cartItem.book.id !== +id);
+    },
+    addBook(state, data) {
+        state.books.push({
+            id: data.id,
+            title: data.title,
+            description: data.description,
+            price: data.price,
+            discount: data.discount,
+            image_url: null,
+            authors: [],
+            genres: []
+        });
+    },
+    updateBook(state, data) {
+        state.books = state.books.map(book => {
+            if (+book.id === +data.id) {
+                book.title = data.title;
+                book.description = data.description;
+                book.price = data.price;
+                book.discount = data.discount;
+            }
+
+            return book;
+        });
+
+        state.cart = state.cart.map(cartItem => {
+            if (+cartItem.book.id === +data.id) {
+                cartItem.book.title = data.title;
+                cartItem.book.description = data.description;
+                cartItem.book.price = data.price;
+                cartItem.book.discount = data.discount;
+            }
+
+            return cartItem;
+        });
+    },
     setAuthors(state, authors) {
         state.authors = authors;
     },

@@ -133,6 +133,25 @@ export default new Router({
           component: () => import ('./views/dashboard/books/Books.vue'),
         },
         {
+          path: 'books/add',
+          component: () => import ('./views/dashboard/books/Add.vue'),
+        },
+        {
+          path: 'books/:id',
+          component: () => import ('./views/dashboard/books/View.vue'),
+        },
+        {
+          path: 'books/:id/edit',
+          component: () => import ('./views/dashboard/books/Edit.vue'),
+          beforeEnter: (to, from, next) => {
+            if (store.state.books.length === 0) {
+              return next('/dashboard/books');
+            }
+
+            return next();
+          }
+        },
+        {
           path: 'genres',
           component: () => import ('./views/dashboard/genres/Genres.vue'),
         },

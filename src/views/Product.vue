@@ -19,7 +19,8 @@
       <div class="card">
 
         <div class="columns">
-          <div class="column is-two-fifths">
+          <div v-if="book.image_url" 
+               class="column is-two-fifths">
             <div class="card-image">
               <figure class="image is-9by16 has-text-centered">
                 <img v-bind:src="rootUrl + '/' + book.image_url" v-bind:alt="book.title">

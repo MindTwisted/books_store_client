@@ -15,7 +15,7 @@
                  v-bind:key='book.id' 
                  class="column is-one-third-widescreen is-half-tablet">
               <div class="card">
-                <div class="card-image">
+                <div v-if="book.image_url" class="card-image">
                   <router-link v-bind:to="'/books/' + book.id">
                     <figure class="image is-9by16 has-text-centered">
                       <img v-bind:src="rootUrl + '/' + book.image_url" 

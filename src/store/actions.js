@@ -17,6 +17,76 @@ const actions = {
                 });
             });
     },
+    deleteBook(context, id) {
+        api.deleteBook(id)
+            .then(response => {
+                context.commit('deleteBook', id);
+                
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    addBook(context, data) {
+        api.addBook(data)
+            .then(response => {
+                context.commit('addBook', {
+                    id: response.data.message.data.id,
+                    ...data
+                });
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/books');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
+    updateBook(context, data) {
+        api.updateBook(data)
+            .then(response => {
+                context.commit('updateBook', data);
+
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Success',
+                    type: 'success',
+                    text: response.data.message.text
+                });
+
+                router.push('/dashboard/books');
+            })
+            .catch(error => {
+                Vue.notify({
+                    group: 'messages',
+                    title: 'Error',
+                    type: 'error',
+                    text: error.data.message.text
+                });
+            });
+    },
     getAuthors(context) {
         api.fetchAuthors()
             .then(response => {

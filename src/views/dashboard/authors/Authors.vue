@@ -53,7 +53,7 @@
 
         </table>
         <div v-else class="column has-text-centered">
-            There are no genres yet.
+            There are no authors yet.
         </div>
     </div>
 </template>
