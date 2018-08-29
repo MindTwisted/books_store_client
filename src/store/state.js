@@ -24,7 +24,8 @@ const state = {
     cart: [],
     paymentTypes: [],
     orders: [],
-    users: []
+    users: [],
+    uniqueID: +Date.now()
 }
 
 export default state;

@@ -54,4 +54,57 @@ export default {
                 });
         });
     },
+    updateBookAuthors(data) {
+        const dataString = data.authors.map(author => `author[]=${author.id}`).join('&');
+
+        return new Promise((resolve, reject) => {
+            axios.post(
+                `${rootUrl}/api/books/${data.id}/authors`,
+                dataString
+                )
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
+    updateBookGenres(data) {
+        const dataString = data.genres.map(genre => `genre[]=${genre.id}`).join('&');
+
+        return new Promise((resolve, reject) => {
+            axios.post(
+                `${rootUrl}/api/books/${data.id}/genres`,
+                dataString
+                )
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
+    updateBookImage(data) {
+        let formData = new FormData();
+        formData.append('image', data.image);
+
+        return new Promise((resolve, reject) => {
+            axios.post(
+                `${rootUrl}/api/books/${data.id}/image`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
+                .then(response => {
+                    resolve(response);
+                })
+                .catch(error => {
+                    reject(error.response);
+                });
+        });
+    },
 }

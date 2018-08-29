@@ -106,6 +106,7 @@
                 </div>
             </div>
             <div class="column is-3-desktop is-12-tablet">
+
                 <div class="panel">
                     <div class="panel-heading">
                         Authors
@@ -116,16 +117,66 @@
                                      placeholder="Select authors"
                                      label="name" 
                                      track-by="name"
+                                     v-on:input="handleBookAuthorsChange"
                                      v-bind:close-on-select="false"
                                      v-bind:hide-selected="true"
                                      v-bind:options="localAuthors.options"></multiselect>
                     </div>
-                    <div class="panel-block">
-                        <button class="button is-info is-small">
+                    <div v-if="localAuthors.isChanged" 
+                         class="panel-block">
+                        <button v-on:click="handleUpdateBookAuthors" 
+                                class="button is-info is-small">
                             Update authors
                         </button>
                     </div>
                 </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        Genres
+                    </div>
+                    <div class="panel-block">
+                        <multiselect v-model="localGenres.value" 
+                                     v-bind:multiple="true"
+                                     placeholder="Select genres"
+                                     label="name" 
+                                     track-by="name"
+                                     v-on:input="handleBookGenresChange"
+                                     v-bind:close-on-select="false"
+                                     v-bind:hide-selected="true"
+                                     v-bind:options="localGenres.options"></multiselect>
+                    </div>
+                    <div v-if="localGenres.isChanged" 
+                         class="panel-block">
+                        <button v-on:click="handleUpdateBookGenres" 
+                                class="button is-info is-small">
+                            Update genres
+                        </button>
+                    </div>
+                </div>
+
+                <div v-bind:key="uniqueID"
+                     class="panel">
+                    <div class="panel-heading">
+                        Image
+                    </div>
+                    <div v-if="book.image_url"
+                         class="panel-block">
+                        <img v-bind:src="rootUrl + '/' + book.image_url + '?id=' + uniqueID" 
+                             v-bind:alt="book.title">
+                    </div>
+                    <div class="panel-block">
+                        <input type="file" ref="image" v-on:change="handleImageChange">
+                    </div>
+                    <div v-if="image.isChanged" 
+                         class="panel-block">
+                        <button v-on:click="handleUpdateBookImage" 
+                                class="button is-info is-small">
+                            Update image
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -136,6 +187,7 @@
 import Vuex from 'vuex'
 import { required, minLength, minValue, maxValue, helpers } from 'vuelidate/lib/validators'
 import Multiselect from 'vue-multiselect'
+import {rootUrl} from '@/api/urls'
 
 const alphaDash = helpers.regex('alphaDash', /^[\w\s-']+$/);
 
@@ -146,13 +198,24 @@ export default {
     },
     data() {
         return {
+            rootUrl,
             title: '',
             description: '',
             price: '',
             discount: '',
             localAuthors: {
                 value: [],
-                options: []
+                options: [],
+                isChanged: false
+            },
+            localGenres: {
+                value: [],
+                options: [],
+                isChanged: false
+            },
+            image: {
+                file: '',
+                isChanged: false
             }
         }
     },
@@ -182,13 +245,22 @@ export default {
         this.discount = this.book.discount;
 
         this.localAuthors = {
+            ...this.localAuthors,
             value: this.book.authors,
             options: this.authors
+        }
+
+        this.localGenres = {
+            ...this.localGenres,
+            value: this.book.genres,
+            options: this.genres
         }
     },
     computed: {
         ...Vuex.mapState([
-            'authors'
+            'authors',
+            'genres',
+            'uniqueID'
         ]),
         ...Vuex.mapGetters([
             'getBookById'
@@ -198,8 +270,14 @@ export default {
         }
     },
     methods: {
+        ...Vuex.mapMutations([
+            'setUniqueID'
+        ]),
         ...Vuex.mapActions([
-            'updateBook'
+            'updateBook',
+            'updateBookAuthors',
+            'updateBookGenres',
+            'updateBookImage'
         ]),
         handleUpdateBook() {
             this.$v.$touch();
@@ -222,6 +300,47 @@ export default {
                 price: this.price,
                 discount: this.discount
             });
+        },
+        handleBookAuthorsChange() {
+            this.localAuthors.isChanged = true;
+        },
+        handleUpdateBookAuthors() {
+            this.updateBookAuthors({
+                id: this.book.id,
+                authors: this.localAuthors.value
+            })
+            .then(() => {
+                this.localAuthors.isChanged = false;
+            })
+            .catch(() => false);
+        },
+        handleBookGenresChange() {
+            this.localGenres.isChanged = true;
+        },
+        handleUpdateBookGenres() {
+            this.updateBookGenres({
+                id: this.book.id,
+                genres: this.localGenres.value
+            })
+            .then(() => {
+                this.localGenres.isChanged = false;
+            })
+            .catch(() => false);;
+        },
+        handleImageChange() {
+            this.image.file = this.$refs.image.files[0];
+            this.image.isChanged = true;
+        },
+        handleUpdateBookImage() {
+            this.updateBookImage({
+                id: this.book.id,
+                image: this.image.file
+            })
+            .then(() => {
+                this.setUniqueID();
+                this.image.isChanged = false;
+            })
+            .catch(() => false);
         }
     }
 }

@@ -87,6 +87,90 @@ const actions = {
                 });
             });
     },
+    updateBookAuthors(context, data) {
+        return new Promise((resolve, reject) => {
+            api.updateBookAuthors(data)
+                .then(response => {
+                    context.commit('updateBookAuthors', data);
+
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
+                });
+        });
+    },
+    updateBookGenres(context, data) {
+        return new Promise((resolve, reject) => {
+            api.updateBookGenres(data)
+                .then(response => {
+                    context.commit('updateBookGenres', data);
+
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
+                });
+        });
+    },
+    updateBookImage(context, data) {
+        return new Promise((resolve, reject) => {
+            api.updateBookImage(data)
+                .then(response => {
+                    context.commit('updateBookImage', {
+                        id: data.id,
+                        imageUrl: response.data.message.data.imageUrl
+                    });
+
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
+                });
+        });
+    },
     getAuthors(context) {
         api.fetchAuthors()
             .then(response => {

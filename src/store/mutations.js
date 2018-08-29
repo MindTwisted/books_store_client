@@ -58,6 +58,33 @@ const mutations = {
             return cartItem;
         });
     },
+    updateBookAuthors(state, data) {
+        state.books = state.books.map(book => {
+            if (+book.id === +data.id) {
+                book.authors = data.authors;
+            }
+
+            return book;
+        });
+    },
+    updateBookGenres(state, data) {
+        state.books = state.books.map(book => {
+            if (+book.id === +data.id) {
+                book.genres = data.genres;
+            }
+
+            return book;
+        });
+    },
+    updateBookImage(state, data) {
+        state.books = state.books.map(book => {
+            if (+book.id === +data.id) {
+                book.image_url = data.imageUrl;
+            }
+
+            return book;
+        });
+    },
     setAuthors(state, authors) {
         state.authors = authors;
     },
@@ -261,6 +288,9 @@ const mutations = {
     },
     setUsers(state, users) {
         state.users = users;
+    },
+    setUniqueID(state) {
+        state.uniqueID = +Date.now();
     }
 }
 

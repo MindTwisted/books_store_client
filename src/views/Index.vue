@@ -18,7 +18,7 @@
                 <div v-if="book.image_url" class="card-image">
                   <router-link v-bind:to="'/books/' + book.id">
                     <figure class="image is-9by16 has-text-centered">
-                      <img v-bind:src="rootUrl + '/' + book.image_url" 
+                      <img v-bind:src="rootUrl + '/' + book.image_url + '?id=' + uniqueID" 
                            v-bind:alt="book.title">
                     </figure>
                   </router-link>
@@ -92,6 +92,9 @@ export default {
     'filters-panel': FiltersPanel
   },
   computed: {
+    ...Vuex.mapState([
+      'uniqueID'
+    ]),
     ...Vuex.mapGetters([
       'books',
       'isAuth',

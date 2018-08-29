@@ -23,7 +23,7 @@
                class="column is-two-fifths">
             <div class="card-image">
               <figure class="image is-9by16 has-text-centered">
-                <img v-bind:src="rootUrl + '/' + book.image_url" v-bind:alt="book.title">
+                <img v-bind:src="rootUrl + '/' + book.image_url + '?id=' + uniqueID" v-bind:alt="book.title">
               </figure>
             </div>
           </div>
@@ -84,6 +84,9 @@ export default {
     }
   },
   computed: {
+    ...Vuex.mapState([
+      'uniqueID'
+    ]),
     ...Vuex.mapGetters([
       'getBookById',
       'isAuth',
