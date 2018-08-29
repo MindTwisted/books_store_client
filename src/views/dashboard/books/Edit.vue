@@ -325,7 +325,7 @@ export default {
             .then(() => {
                 this.localGenres.isChanged = false;
             })
-            .catch(() => false);;
+            .catch(() => false);
         },
         handleImageChange() {
             this.image.file = this.$refs.image.files[0];

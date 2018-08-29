@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuelidate from 'vuelidate'
 import Notifications from 'vue-notification'
+import VueChartkick from 'vue-chartkick'
+import Chart from 'chart.js'
 import axios from 'axios'
 import App from './App.vue'
 import router from './router'
@@ -45,6 +47,7 @@ Vue.filter('percent', function (value) {
 
 Vue.use(Vuelidate)
 Vue.use(Notifications)
+Vue.use(VueChartkick, {adapter: Chart})
 
 new Vue({
   router,
@@ -54,8 +57,6 @@ new Vue({
 
 /*
   TODO:
-  1) add books with full authors, genres, images functionality;
-  2) add charts on dashboard index;
   3) add loaders;
   4) add REST API documentation;
 */
