@@ -59,13 +59,21 @@ import Vuex from 'vuex'
 export default {
     name: 'Index',
     mounted() {
-        this.getBooks();
-        this.getAuthors();
-        this.getGenres();
-        this.getCart();
-        this.getOrders();
-        this.getPaymentTypes();
-        this.getUsers();
+        this.setLoading();
+    
+        let promises = [];
+
+        promises.push(this.getBooks());
+        promises.push(this.getAuthors());
+        promises.push(this.getGenres());
+        promises.push(this.getOrders());
+        promises.push(this.getPaymentTypes());
+        promises.push(this.getUsers());
+
+        Promise.all(promises)
+            .finally(() => {
+                this.removeLoading();
+            });
     },
     methods: {
         ...Vuex.mapActions([
@@ -77,6 +85,10 @@ export default {
             'getPaymentTypes',
             'getUsers'
         ]),
+        ...Vuex.mapMutations([
+            'setLoading',
+            'removeLoading'
+        ])
     }
 }
 </script>

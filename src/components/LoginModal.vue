@@ -52,10 +52,15 @@
 
                 </section>
                 <footer class="modal-card-foot">
-                    <button v-on:click="handleLoginUser" 
-                            class="button is-success">Submit</button>
-                    <button v-on:click="removeLoginModal"
-                            class="button">Cancel</button>
+                    <template v-if="!isLoading">
+                        <button v-on:click="handleLoginUser" 
+                                class="button is-success">Submit</button>
+                        <button v-on:click="removeLoginModal"
+                                class="button">Cancel</button>
+                    </template>
+                    <button v-else class="button is-success is-loading" disabled>
+                      Submit
+                    </button>
                 </footer>
             </div>
         </div>
@@ -72,6 +77,7 @@ export default {
         return {
             email: '',
             password: '',
+            isLoading: false
         }
     },
     validations: {
@@ -101,9 +107,14 @@ export default {
                 return false;
             }
 
+            this.isLoading = true;
+
             this.loginUser({
                 email: this.email,
                 password: this.password
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         }
     }

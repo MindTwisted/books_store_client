@@ -4,18 +4,24 @@ import router from '../router'
 
 const actions = {
     getBooks(context) {
-        api.fetchBooks()
-            .then(response => {
-                context.commit('setBooks', response.data.message.data);
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+        return new Promise((resolve, reject) => {
+            api.fetchBooks()
+                .then(response => {
+                    context.commit('setBooks', response.data.message.data);
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     deleteBook(context, id) {
         api.deleteBook(id)
@@ -172,18 +178,24 @@ const actions = {
         });
     },
     getAuthors(context) {
-        api.fetchAuthors()
-            .then(response => {
-                context.commit('setAuthors', response.data.message.data);
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+        return new Promise((resolve, reject) => {
+            api.fetchAuthors()
+                .then(response => {
+                    context.commit('setAuthors', response.data.message.data);
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     deleteAuthor(context, id) {
         api.deleteAuthor(id)
@@ -259,18 +271,24 @@ const actions = {
             });
     },
     getGenres(context) {
-        api.fetchGenres()
-            .then(response => {
-                context.commit('setGenres', response.data.message.data);
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+        return new Promise((resolve, reject) => {
+            api.fetchGenres()
+                .then(response => {
+                    context.commit('setGenres', response.data.message.data);
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     deleteGenre(context, id) {
         api.deleteGenre(id)
@@ -346,77 +364,89 @@ const actions = {
             });
     },
     registerUser(context, data) {
-        api.registerUser(data)
-            .then(response => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+        return new Promise((resolve, reject) => {
+            api.registerUser(data)
+                .then(response => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                context.commit('removeRegisterModal');
-                context.commit('setLoginModal');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    context.commit('removeRegisterModal');
+                    context.commit('setLoginModal');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     loginUser(context, data) {
         let token;
         let text;
 
-        api.loginUser(data)
-            .then(response => {
-                token = response.data.message.data.token;
-                text = response.data.message.text;
+        return new Promise((resolve, reject) => {
+            api.loginUser(data)
+                .then(response => {
+                    token = response.data.message.data.token;
+                    text = response.data.message.text;
 
-                return api.fetchAuthUser();
-            })
-            .then(response => {
-                const data = response.data.message.data;
+                    return api.fetchAuthUser();
+                })
+                .then(response => {
+                    const data = response.data.message.data;
 
-                context.commit('setAuth', {
-                    id: data.id,
-                    token: token,
-                    name: data.name,
-                    email: data.email,
-                    role: data.role,
-                    discount: data.discount
+                    context.commit('setAuth', {
+                        id: data.id,
+                        token: token,
+                        name: data.name,
+                        email: data.email,
+                        role: data.role,
+                        discount: data.discount
+                    });
+
+                    context.dispatch('getCart');
+                    context.dispatch('getPaymentTypes');
+
+                    localStorage.setItem('id', data.id);
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('name', data.name);
+                    localStorage.setItem('email', data.email);
+                    localStorage.setItem('role', data.role);
+                    localStorage.setItem('discount', data.discount);
+
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: text
+                    });
+
+                    context.commit('removeLoginModal');
+
+                    resolve();
+                })  
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-
-                context.dispatch('getCart');
-                context.dispatch('getPaymentTypes');
-
-                localStorage.setItem('id', data.id);
-                localStorage.setItem('token', token);
-                localStorage.setItem('name', data.name);
-                localStorage.setItem('email', data.email);
-                localStorage.setItem('role', data.role);
-                localStorage.setItem('discount', data.discount);
-
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: text
-                });
-
-                context.commit('removeLoginModal');
-            })  
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     logoutUser(context) {
         api.logoutUser()
@@ -511,39 +541,51 @@ const actions = {
             });
     }, 
     getCart(context) {
-        api.fetchCart()
-            .then(response => {
-                context.commit('setCart', response.data.message.data);
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+        return new Promise((resolve, reject) => {
+            api.fetchCart()
+                .then(response => {
+                    context.commit('setCart', response.data.message.data);
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     deleteFromCart(context, bookId) {
-        api.deleteFromCart(bookId)
-            .then(response => {
-                context.commit('deleteFromCart', bookId);
+        return new Promise((resolve, reject) => {
+            api.deleteFromCart(bookId)
+                .then(response => {
+                    context.commit('deleteFromCart', bookId);
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     updateInCart(context, data) {
         return new Promise((resolve, reject) => {
@@ -583,66 +625,84 @@ const actions = {
         });
     },
     addToCart(context, data) {
-        api.addToCart(data)
-            .then(response => {
-                context.commit('addToCart', {
-                    id: response.data.message.data.id,
-                    bookId: data.bookId,
-                    count: data.count
+        return new Promise((resolve, reject) => {
+            api.addToCart(data)
+                .then(response => {
+                    context.commit('addToCart', {
+                        id: response.data.message.data.id,
+                        bookId: data.bookId,
+                        count: data.count
+                    });
+                    
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-                
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     getPaymentTypes(context) {
-        api.fetchPaymentTypes()
-            .then(response => {
-                context.commit('setPaymentTypes', response.data.message.data);
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+        return new Promise((resolve, reject) => {
+            api.fetchPaymentTypes()
+                .then(response => {
+                    context.commit('setPaymentTypes', response.data.message.data);
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     addOrder(context, paymentType) {
-        api.addOrder(paymentType)
-            .then(response => {
-                context.commit('removeCart');
+        return new Promise((resolve, reject) => {
+            api.addOrder(paymentType)
+                .then(response => {
+                    context.commit('removeCart');
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/orders');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/orders');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     getOrders(context) {
         api.fetchOrders()

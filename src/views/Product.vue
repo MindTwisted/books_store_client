@@ -55,9 +55,16 @@
                         v-on:click="fakeAddToCart" 
                         class="button is-success is-outlined">Add To Cart</button>
                 <template v-else>
-                  <button v-if="!isInCart(book.id)" 
-                          v-on:click="handleAddToCart(book.id)" 
-                          class="button is-success is-outlined">Add To Cart</button>
+                  <template v-if="!isInCart(book.id)">
+                    <button v-if="!isLoading"
+                            v-on:click="handleAddToCart(book.id)" 
+                            class="button is-success is-outlined">
+                      Add To Cart
+                    </button>
+                    <button v-else class="button is-success is-loading" disabled>
+                      Add To Cart
+                    </button>
+                  </template>
                   <span v-else class="tag is-info is-medium">In Cart</span>
                 </template>
               </div>
@@ -80,7 +87,8 @@ export default {
   name: 'Product',
   data() {
     return {
-      rootUrl
+      rootUrl,
+      isLoading: false
     }
   },
   computed: {
@@ -105,9 +113,14 @@ export default {
       return (price - price * (discount / 100)).toFixed(2);
     },
     handleAddToCart(id) {
+      this.isLoading = true;
+
       this.addToCart({
         bookId: id,
         count: 1
+      })
+      .finally(() => {
+        this.isLoading = false;
       });
     }
   }

@@ -90,8 +90,12 @@
 
             <div class="field">
                 <div class="control">
-                    <button v-on:click="handleUpdateUser" 
+                    <button v-if="!isLoading" 
+                            v-on:click="handleUpdateUser" 
                             class="button is-success">Update</button>
+                    <button v-else class="button is-success is-loading" disabled>
+                        Update
+                    </button>
                 </div>
             </div>
 
@@ -111,7 +115,8 @@ export default {
             name: '',
             email: '',
             password: '',
-            repeatPassword: ''
+            repeatPassword: '',
+            isLoading: false
         }
     },
     validations: {
@@ -152,16 +157,23 @@ export default {
                 return false;
             }
 
+            this.isLoading = true;
+
             this.updateCurrentUser({
                 name: this.name,
                 email: this.email,
                 password: this.password
-            }).then(() => {
+            })
+            .then(() => {
                 this.password = '';
                 this.repeatPassword = '';
 
                 this.$v.$reset();
-            }).catch(() => false);
+            })
+            .catch(() => false)
+            .finally(() => {
+                this.isLoading = false;
+            });
         }
     }
 }

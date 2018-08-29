@@ -291,6 +291,12 @@ const mutations = {
     },
     setUniqueID(state) {
         state.uniqueID = +Date.now();
+    },
+    setLoading(state) {
+        state.isLoading = true;
+    },
+    removeLoading(state) {
+        state.isLoading = false;
     }
 }
 

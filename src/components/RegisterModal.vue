@@ -88,10 +88,15 @@
                     
                 </section>
                 <footer class="modal-card-foot">
-                    <button v-on:click="handleRegisterUser" 
-                            class="button is-success">Submit</button>
-                    <button v-on:click="removeRegisterModal"
-                            class="button">Cancel</button>
+                    <template v-if="!isLoading">
+                        <button v-on:click="handleRegisterUser" 
+                                class="button is-success">Submit</button>
+                        <button v-on:click="removeRegisterModal"
+                                class="button">Cancel</button>
+                    </template>
+                    <button v-else class="button is-success is-loading" disabled>
+                      Submit
+                    </button>
                 </footer>
             </div>
         </div>
@@ -109,7 +114,8 @@ export default {
             name: '',
             email: '',
             password: '',
-            repeatPassword: ''
+            repeatPassword: '',
+            isLoading: false
         }
     },
     validations: {
@@ -147,10 +153,15 @@ export default {
                 return false;
             }
 
+            this.isLoading = true;
+
             this.registerUser({
                 name: this.name,
                 email: this.email,
                 password: this.password
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         }
     }

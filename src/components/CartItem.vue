@@ -1,6 +1,8 @@
 <template>
     <div class="cartItem box">
-        <button v-on:click="deleteFromCart(item.book.id)" 
+        <loader v-if="isLoading"></loader>
+
+        <button v-on:click="handleDeleteFromCart" 
                 class="delete is-large has-background-danger"></button>
         <h2 class="title">{{ item.book.title }}</h2>
 
@@ -60,13 +62,18 @@
 <script>
 import Vuex from 'vuex'
 import { required, integer, minValue, maxValue } from 'vuelidate/lib/validators'
+import Loader from '@/components/Loader.vue'
 
 export default {
     name: 'CartItem',
+    components: {
+        'loader': Loader
+    },
     data() {
         return {
             isEditing: false,
-            count: ''
+            count: '',
+            isLoading: false
         }
     },
     validations: {
@@ -107,6 +114,14 @@ export default {
 
             return totalPrice.toFixed(2);
         },
+        handleDeleteFromCart() {
+            this.isLoading = true;
+            
+            this.deleteFromCart(this.item.book.id)
+            .finally(() => {
+                this.isLoading = false;
+            });
+        },
         handleUpdateCart() {
             this.$v.$touch();
 
@@ -120,12 +135,19 @@ export default {
                 return false;
             }
 
+            this.isLoading = true;
+
             this.updateInCart({
                 bookId: this.item.book.id,
                 count: this.count
-            }).then(() => {
+            })
+            .then(() => {
                 this.removeEditing();
-            }).catch(() => false);
+            })
+            .catch(() => false)
+            .finally(() => {
+                this.isLoading = false;
+            });
         }
     }
 }

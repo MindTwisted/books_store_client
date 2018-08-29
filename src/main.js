@@ -57,6 +57,6 @@ new Vue({
 
 /*
   TODO:
-  3) add loaders;
-  4) add REST API documentation;
+  1) add loaders;
+  2) build and deploy on server;
 */

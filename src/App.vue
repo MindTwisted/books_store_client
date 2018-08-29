@@ -14,6 +14,8 @@
 
     <register-modal v-if="registerModal.isVisible"></register-modal>
     <login-modal v-if="loginModal.isVisible"></login-modal>
+
+    <loader v-if="isLoading"></loader>
     
   </div>
 </template>
@@ -23,29 +25,42 @@ import Vuex from 'vuex'
 import Navbar from '@/components/Navbar.vue'
 import RegisterModal from '@/components/RegisterModal.vue'
 import LoginModal from '@/components/LoginModal.vue'
+import Loader from '@/components/Loader.vue'
 
 export default {
   name: 'App',
   components: {
     'navbar': Navbar,
     'register-modal': RegisterModal,
-    'login-modal': LoginModal
+    'login-modal': LoginModal,
+    'loader': Loader
   },
   mounted() {
-    this.getBooks();
-    this.getAuthors();
-    this.getGenres();
+    this.setLoading();
+    
+    let promises = [];
+
+    promises.push(this.getBooks());
+    promises.push(this.getAuthors());
+    promises.push(this.getGenres());
 
     if (this.isAuth) {
-      this.getCart();
-      this.getPaymentTypes();
+      promises.push(this.getCart());
+      promises.push(this.getPaymentTypes());
     }
+
+    Promise.all(promises)
+      .finally(() => {
+        this.removeLoading();
+      });
+
   },
   computed: {
     ...Vuex.mapState([
       'loginModal',
       'registerModal',
-      'loginModal'
+      'loginModal',
+      'isLoading'
     ]),
     ...Vuex.mapGetters([
       'isAuth'
@@ -59,6 +74,10 @@ export default {
       'getCart',
       'getPaymentTypes'
     ]),
+    ...Vuex.mapMutations([
+      'setLoading',
+      'removeLoading'
+    ])
   }
 }
 </script>
@@ -92,6 +111,7 @@ export default {
 
   &__content {
     padding-top: 5rem;
+    position: relative;
   }
 }
 

@@ -25,7 +25,8 @@ const state = {
     paymentTypes: [],
     orders: [],
     users: [],
-    uniqueID: +Date.now()
+    uniqueID: +Date.now(),
+    isLoading: false
 }
 
 export default state;

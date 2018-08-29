@@ -50,14 +50,19 @@
                             </ul>
                         </div>
                         <div class="field is-grouped">
-                            <p class="control">
-                                <button v-on:click="handlePurchase" 
-                                        class="button is-success">Purchase</button>
-                            </p>
-                            <p class="control">
-                                <button v-on:click="removePurchasing"
-                                        class="button">Cancel</button>
-                            </p>
+                            <template v-if="!isLoading">
+                                <p class="control">
+                                    <button v-on:click="handlePurchase" 
+                                            class="button is-success">Purchase</button>
+                                </p>
+                                <p class="control">
+                                    <button v-on:click="removePurchasing"
+                                            class="button">Cancel</button>
+                                </p>
+                            </template>
+                            <button v-else class="button is-success is-loading" disabled>
+                                Purchase
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -86,7 +91,8 @@ export default {
     data() {
         return {
             isPurchasing: false,
-            paymentType: ''
+            paymentType: '',
+            isLoading: false
         }
     },
     validations: {
@@ -139,7 +145,12 @@ export default {
                 return false;
             }
 
-            this.addOrder(this.paymentType);
+            this.isLoading = true;
+
+            this.addOrder(this.paymentType)
+            .finally(() => {
+                this.isLoading = false;
+            });
         }
     }
 }
