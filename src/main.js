@@ -57,6 +57,5 @@ new Vue({
 
 /*
   TODO:
-  1) add loaders;
   2) build and deploy on server;
 */
