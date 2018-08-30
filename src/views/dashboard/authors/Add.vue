@@ -35,8 +35,12 @@
             </div>
 
             <div class="field">
-                <button v-on:click="handleAddAuthor" 
+                <button v-if="!isLoading" 
+                        v-on:click="handleAddAuthor" 
                         class="button is-success">
+                    Add
+                </button>
+                <button v-else class="button is-success is-loading" disabled>
                     Add
                 </button>
             </div>
@@ -54,7 +58,8 @@ export default {
     name: 'Add',
     data() {
         return {
-            name: ''
+            name: '',
+            isLoading: false
         }
     },
     validations: {
@@ -73,7 +78,12 @@ export default {
                 return false;
             }
 
-            this.addAuthor(this.name);
+            this.isLoading = true;
+
+            this.addAuthor(this.name)
+            .finally(() => {
+                this.isLoading = false;
+            });
         }
     }
 }

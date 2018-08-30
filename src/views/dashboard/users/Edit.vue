@@ -77,8 +77,11 @@
             </div>
 
             <div class="field">
-                <button v-on:click="handleUpdateUser" 
+                <button v-if="!isLoading" v-on:click="handleUpdateUser" 
                         class="button is-success">
+                    Update
+                </button>
+                <button v-else class="button is-success is-loading" disabled>
                     Update
                 </button>
             </div>
@@ -98,7 +101,8 @@ export default {
         return {
             name: '',
             email: '',
-            discount: ''
+            discount: '',
+            isLoading: false
         }
     },
     validations: {
@@ -148,11 +152,16 @@ export default {
                 
             }
 
+            this.isLoading = true;
+
             this.updateUser({
                 id: this.user.id,
                 name: this.name,
                 email: this.email,
                 discount: this.discount
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         }
     }

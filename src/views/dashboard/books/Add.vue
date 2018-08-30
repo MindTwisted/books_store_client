@@ -94,8 +94,11 @@
             </div>
 
             <div class="field">
-                <button v-on:click="handleAddBook" 
+                <button v-if="!isLoading" v-on:click="handleAddBook" 
                         class="button is-success">
+                    Add
+                </button>
+                <button v-else class="button is-success is-loading" disabled>
                     Add
                 </button>
             </div>
@@ -118,7 +121,8 @@ export default {
             title: '',
             description: '',
             price: '',
-            discount: '0.00'
+            discount: '0.00',
+            isLoading: false
         }
     },
     validations: {
@@ -151,11 +155,16 @@ export default {
                 return false;
             }
 
+            this.isLoading = true;
+
             this.addBook({
                 title: this.title,
                 description: this.description,
                 price: this.price,
                 discount: this.discount
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         }
     }

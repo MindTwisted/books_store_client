@@ -37,8 +37,11 @@
             </div>
 
             <div class="field">
-                <button v-on:click="handleUpdateOrder" 
+                <button v-if="!isLoading" v-on:click="handleUpdateOrder" 
                         class="button is-success">
+                    Update
+                </button>
+                <button v-else class="button is-success is-loading" disabled>
                     Update
                 </button>
             </div>
@@ -58,7 +61,8 @@ export default {
     name: 'Edit',
     data() {
         return {
-            status: ''
+            status: '',
+            isLoading: false
         }
     },
     validations: {
@@ -92,9 +96,14 @@ export default {
                 return this.$router.push('/dashboard/orders');
             }
 
+            this.isLoading = true;
+
             this.updateOrder({
                 id: this.order.id,
                 status: this.status
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         }
     }

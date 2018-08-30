@@ -24,74 +24,92 @@ const actions = {
         });
     },
     deleteBook(context, id) {
-        api.deleteBook(id)
-            .then(response => {
-                context.commit('deleteBook', id);
-                
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
+        return new Promise((resolve, reject) => {
+            api.deleteBook(id)
+                .then(response => {
+                    context.commit('deleteBook', id);
+                    
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     addBook(context, data) {
-        api.addBook(data)
-            .then(response => {
-                context.commit('addBook', {
-                    id: response.data.message.data.id,
-                    ...data
-                });
+        return new Promise((resolve, reject) => {
+            api.addBook(data)
+                .then(response => {
+                    context.commit('addBook', {
+                        id: response.data.message.data.id,
+                        ...data
+                    });
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/books');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/books');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     updateBook(context, data) {
-        api.updateBook(data)
-            .then(response => {
-                context.commit('updateBook', data);
+        return new Promise((resolve, reject) => {
+            api.updateBook(data)
+                .then(response => {
+                    context.commit('updateBook', data);
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/books');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/books');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     updateBookAuthors(context, data) {
         return new Promise((resolve, reject) => {
@@ -198,77 +216,95 @@ const actions = {
         });
     },
     deleteAuthor(context, id) {
-        api.deleteAuthor(id)
-            .then(response => {
-                context.commit('deleteAuthor', id);
-                
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
+        return new Promise((resolve, reject) => {
+            api.deleteAuthor(id)
+                .then(response => {
+                    context.commit('deleteAuthor', id);
+                    
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     addAuthor(context, name) {
-        api.addAuthor(name)
-            .then(response => {
-                context.commit('addAuthor', {
-                    id: response.data.message.data.id,
-                    name: name
-                });
+        return new Promise((resolve, reject) => {
+            api.addAuthor(name)
+                .then(response => {
+                    context.commit('addAuthor', {
+                        id: response.data.message.data.id,
+                        name: name
+                    });
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/authors');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/authors');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     updateAuthor(context, data) {
-        api.updateAuthor(data)
-            .then(response => {
-                context.commit('updateAuthor', {
-                    id: data.id,
-                    name: data.name
-                });
+        return new Promise((resolve, reject) => {
+            api.updateAuthor(data)
+                .then(response => {
+                    context.commit('updateAuthor', {
+                        id: data.id,
+                        name: data.name
+                    });
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/authors');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/authors');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     getGenres(context) {
         return new Promise((resolve, reject) => {
@@ -291,77 +327,95 @@ const actions = {
         });
     },
     deleteGenre(context, id) {
-        api.deleteGenre(id)
-            .then(response => {
-                context.commit('deleteGenre', id);
-                
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
+        return new Promise((resolve, reject) => {
+            api.deleteGenre(id)
+                .then(response => {
+                    context.commit('deleteGenre', id);
+                    
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     addGenre(context, name) {
-        api.addGenre(name)
-            .then(response => {
-                context.commit('addGenre', {
-                    id: response.data.message.data.id,
-                    name: name
-                });
+        return new Promise((resolve, reject) => {
+            api.addGenre(name)
+                .then(response => {
+                    context.commit('addGenre', {
+                        id: response.data.message.data.id,
+                        name: name
+                    });
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/genres');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/genres');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     updateGenre(context, data) {
-        api.updateGenre(data)
-            .then(response => {
-                context.commit('updateGenre', {
-                    id: data.id,
-                    name: data.name
-                });
+        return new Promise((resolve, reject) => {
+            api.updateGenre(data)
+                .then(response => {
+                    context.commit('updateGenre', {
+                        id: data.id,
+                        name: data.name
+                    });
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/genres');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/genres');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     registerUser(context, data) {
         return new Promise((resolve, reject) => {
@@ -512,33 +566,39 @@ const actions = {
         });
     },
     updateUser(context, data) {
-        api.updateUser(data)
-            .then(response => {
-                context.commit('updateUser', data);
+        return new Promise((resolve, reject) => {
+            api.updateUser(data)
+                .then(response => {
+                    context.commit('updateUser', data);
 
-                if (+context.state.auth.id === +data.id) {
-                    localStorage.setItem('name', data.name);
-                    localStorage.setItem('email', data.email);
-                    localStorage.setItem('discount', data.discount);
-                }
+                    if (+context.state.auth.id === +data.id) {
+                        localStorage.setItem('name', data.name);
+                        localStorage.setItem('email', data.email);
+                        localStorage.setItem('discount', data.discount);
+                    }
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    router.push('/dashboard/users');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-
-                router.push('/dashboard/users');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     }, 
     getCart(context) {
         return new Promise((resolve, reject) => {
@@ -719,48 +779,60 @@ const actions = {
             });
     },
     deleteOrder(context, id) {
-        api.deleteOrder(id)
-            .then(response => {
-                context.commit('deleteOrder', id);
-                
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
+        return new Promise((resolve, reject) => {
+            api.deleteOrder(id)
+                .then(response => {
+                    context.commit('deleteOrder', id);
+                    
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
-                });
-            });
+        });
     },
     updateOrder(context, data) {
-        api.updateOrder(data)
-            .then(response => {
-                context.commit('updateOrder', data);
+        return new Promise((resolve, reject) => {
+            api.updateOrder(data)
+                .then(response => {
+                    context.commit('updateOrder', data);
 
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Success',
-                    type: 'success',
-                    text: response.data.message.text
-                });
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Success',
+                        type: 'success',
+                        text: response.data.message.text
+                    });
 
-                router.push('/dashboard/orders');
-            })
-            .catch(error => {
-                Vue.notify({
-                    group: 'messages',
-                    title: 'Error',
-                    type: 'error',
-                    text: error.data.message.text
+                    router.push('/dashboard/orders');
+
+                    resolve();
+                })
+                .catch(error => {
+                    Vue.notify({
+                        group: 'messages',
+                        title: 'Error',
+                        type: 'error',
+                        text: error.data.message.text
+                    });
+
+                    reject();
                 });
-            });
+        });
     },
     getUsers(context) {
         api.fetchUsers()

@@ -45,23 +45,11 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="order in sortedOrders" v-bind:key="order.id">
-                        <td>{{ order.id }}</td>
-                        <td>{{ order.user.name }}</td>
-                        <td>{{ formatStatus(order.status) }}</td>
-                        <td>{{ order.payment_type }}</td>
-                        <td>{{ order.total_price | price }}</td>
-                        <td>{{ order.total_discount | price }}</td>
-                        <td>{{ order.created_at }}</td>
-                        <td class="orders__actions">
-                            <router-link v-bind:to="'/dashboard/orders/' + order.id" 
-                                        class="button is-info is-small">Details</router-link>
-                            <router-link v-bind:to="'/dashboard/orders/' + order.id + '/edit'" 
-                                        class="button is-primary is-small">Edit</router-link>
-                            <button v-on:click="deleteOrder(order.id)" 
-                                    class="button is-danger is-small">Delete</button>
-                        </td>
-                    </tr>
+
+                    <order-item v-for="order in sortedOrders" 
+                                v-bind:key="order.id" 
+                                v-bind:order="order"></order-item>
+
                 </tbody>
                 <tfoot>
                     <tr>
@@ -88,9 +76,13 @@
 
 <script>
 import Vuex from 'vuex'
+import OrderItem from './OrderItem'
 
 export default {
-    name: 'Orders',
+    name: 'orders',
+    components: {
+        'order-item': OrderItem
+    },
     data() {
         return {
             sort: 'CREATED_DESC'
@@ -149,16 +141,6 @@ export default {
 
             return orders;
         }
-    },
-    methods: {
-        ...Vuex.mapActions([
-            'deleteOrder'
-        ]),
-        formatStatus(value) {
-            return value.split(/[_\-\s]/).map(item => {
-                return item[0].toUpperCase() + item.slice(1);
-            }).join(' ');
-        }
     }
 }
 </script>
@@ -171,12 +153,6 @@ export default {
 
     &__sortControl {
         text-align: right;
-    }
-
-    &__actions {
-        .button {
-            margin-right: 0.25rem;
-        }
     }
 
 }

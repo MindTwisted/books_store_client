@@ -31,17 +31,11 @@
             </thead>
 
             <tbody>
-                <tr v-for="author in authors" v-bind:key="author.id">
-                    <td>{{ author.id }}</td>
-                    <td>{{ author.name }}</td>
-                    <td class="authors__actions">
-                        <router-link v-bind:to="'authors/' + author.id + '/edit'" class="button is-primary is-small">
-                            Edit
-                        </router-link>
-                        <button v-on:click="deleteAuthor(author.id)"
-                                class="button is-danger is-small">Delete</button>
-                    </td>
-                </tr>
+                
+                <author-item v-for="author in authors" 
+                             v-bind:key="author.id" 
+                             v-bind:author="author"></author-item>
+
             </tbody>
             <tfoot>
                 <tr>
@@ -60,17 +54,16 @@
 
 <script>
 import Vuex from 'vuex'
+import AuthorItem from './AuthorItem'
 
 export default {
-    name: 'Authors',
+    name: 'authors',
+    components: {
+        'author-item': AuthorItem
+    },
     computed: {
         ...Vuex.mapState([
             'authors'
-        ])
-    },
-    methods: {
-        ...Vuex.mapActions([
-            'deleteAuthor'
         ])
     }
 }
@@ -78,12 +71,6 @@ export default {
 
 <style lang="scss" scoped>
 .authors {
-    &__actions {
-        a {
-            margin-right: 0.25rem;
-        }
-    }
-
     &__add {
         text-align: right;
         margin: 1rem 0 2rem 0;

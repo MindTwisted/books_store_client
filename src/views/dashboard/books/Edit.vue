@@ -97,8 +97,12 @@
                     </div>
 
                     <div class="field">
-                        <button v-on:click="handleUpdateBook" 
+                        <button v-if="!isLoading" 
+                                v-on:click="handleUpdateBook" 
                                 class="button is-success">
+                            Update
+                        </button>
+                        <button v-else class="button is-success is-loading" disabled>
                             Update
                         </button>
                     </div>
@@ -124,8 +128,12 @@
                     </div>
                     <div v-if="localAuthors.isChanged" 
                          class="panel-block">
-                        <button v-on:click="handleUpdateBookAuthors" 
+                        <button v-if="!isAuthorsLoading" 
+                                v-on:click="handleUpdateBookAuthors" 
                                 class="button is-info is-small">
+                            Update authors
+                        </button>
+                        <button v-else class="button is-info is-small is-loading" disabled>
                             Update authors
                         </button>
                     </div>
@@ -148,8 +156,12 @@
                     </div>
                     <div v-if="localGenres.isChanged" 
                          class="panel-block">
-                        <button v-on:click="handleUpdateBookGenres" 
+                        <button v-if="!isGenresLoading" 
+                                v-on:click="handleUpdateBookGenres" 
                                 class="button is-info is-small">
+                            Update genres
+                        </button>
+                        <button v-else class="button is-info is-small is-loading" disabled>
                             Update genres
                         </button>
                     </div>
@@ -170,8 +182,12 @@
                     </div>
                     <div v-if="image.isChanged" 
                          class="panel-block">
-                        <button v-on:click="handleUpdateBookImage" 
+                        <button v-if="!isImageLoading" 
+                                v-on:click="handleUpdateBookImage" 
                                 class="button is-info is-small">
+                            Update image
+                        </button>
+                        <button v-else class="button is-info is-small is-loading" disabled>
                             Update image
                         </button>
                     </div>
@@ -216,7 +232,11 @@ export default {
             image: {
                 file: '',
                 isChanged: false
-            }
+            },
+            isLoading: false,
+            isAuthorsLoading: false,
+            isGenresLoading: false,
+            isImageLoading: false
         }
     },
     validations: {
@@ -293,18 +313,25 @@ export default {
                 return this.$router.push('/dashboard/books');
             }
 
+            this.isLoading = true;
+
             this.updateBook({
                 id: this.book.id,
                 title: this.title,
                 description: this.description,
                 price: this.price,
                 discount: this.discount
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         },
         handleBookAuthorsChange() {
             this.localAuthors.isChanged = true;
         },
         handleUpdateBookAuthors() {
+            this.isAuthorsLoading = true;
+
             this.updateBookAuthors({
                 id: this.book.id,
                 authors: this.localAuthors.value
@@ -312,12 +339,17 @@ export default {
             .then(() => {
                 this.localAuthors.isChanged = false;
             })
-            .catch(() => false);
+            .catch(() => false)
+            .finally(() => {
+                this.isAuthorsLoading = false;
+            });
         },
         handleBookGenresChange() {
             this.localGenres.isChanged = true;
         },
         handleUpdateBookGenres() {
+            this.isGenresLoading = true;
+
             this.updateBookGenres({
                 id: this.book.id,
                 genres: this.localGenres.value
@@ -325,13 +357,18 @@ export default {
             .then(() => {
                 this.localGenres.isChanged = false;
             })
-            .catch(() => false);
+            .catch(() => false)
+            .finally(() => {
+                this.isGenresLoading = false;
+            });
         },
         handleImageChange() {
             this.image.file = this.$refs.image.files[0];
             this.image.isChanged = true;
         },
         handleUpdateBookImage() {
+            this.isImageLoading = true;
+
             this.updateBookImage({
                 id: this.book.id,
                 image: this.image.file
@@ -340,7 +377,10 @@ export default {
                 this.setUniqueID();
                 this.image.isChanged = false;
             })
-            .catch(() => false);
+            .catch(() => false)
+            .finally(() => {
+                this.isImageLoading = false;
+            });
         }
     }
 }

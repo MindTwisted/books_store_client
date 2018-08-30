@@ -35,8 +35,12 @@
             </div>
 
             <div class="field">
-                <button v-on:click="handleUpdateGenre" 
+                <button v-if="!isLoading" 
+                        v-on:click="handleUpdateGenre" 
                         class="button is-success">
+                    Update
+                </button>
+                <button v-else class="button is-success is-loading" disabled>
                     Update
                 </button>
             </div>
@@ -54,7 +58,8 @@ export default {
     name: 'Add',
     data() {
         return {
-            name: ''
+            name: '',
+            isLoading: false
         }
     },
     validations: {
@@ -88,9 +93,14 @@ export default {
                 return this.$router.push('/dashboard/genres');
             }
 
+            this.isLoading = true;
+
             this.updateGenre({
                 id: this.genre.id,
                 name: this.name
+            })
+            .finally(() => {
+                this.isLoading = false;
             });
         }
     }

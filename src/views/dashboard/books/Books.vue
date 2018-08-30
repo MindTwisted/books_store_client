@@ -33,22 +33,9 @@
             </thead>
 
             <tbody>
-                <tr v-for="book in books" v-bind:key="book.id">
-                    <td>{{ book.id }}</td>
-                    <td>{{ book.title }}</td>
-                    <td>{{ book.price | price }}</td>
-                    <td>{{ book.discount | percent }}</td>
-                    <td class="books__actions">
-                        <router-link v-bind:to="'books/' + book.id" class="button is-info is-small">
-                            View
-                        </router-link>
-                        <router-link v-bind:to="'books/' + book.id + '/edit'" class="button is-primary is-small">
-                            Edit
-                        </router-link>
-                        <button v-on:click="deleteBook(book.id)"
-                                class="button is-danger is-small">Delete</button>
-                    </td>
-                </tr>
+                <book-item v-for="book in books" 
+                           v-bind:key="book.id"
+                           v-bind:book="book"></book-item>
             </tbody>
             <tfoot>
                 <tr>
@@ -69,17 +56,16 @@
 
 <script>
 import Vuex from 'vuex'
+import BookItem from './BookItem'
 
 export default {
     name: 'Books',
+    components: {
+        'book-item': BookItem
+    },
     computed: {
         ...Vuex.mapState([
             'books'
-        ])
-    },
-    methods: {
-        ...Vuex.mapActions([
-            'deleteBook'
         ])
     }
 }
@@ -87,12 +73,6 @@ export default {
 
 <style lang="scss" scoped>
 .books {
-    &__actions {
-        a {
-            margin-right: 0.25rem;
-        }
-    }
-
     &__add {
         text-align: right;
         margin: 1rem 0 2rem 0;

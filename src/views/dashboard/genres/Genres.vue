@@ -31,17 +31,11 @@
             </thead>
 
             <tbody>
-                <tr v-for="genre in genres" v-bind:key="genre.id">
-                    <td>{{ genre.id }}</td>
-                    <td>{{ genre.name }}</td>
-                    <td class="genres__actions">
-                        <router-link v-bind:to="'genres/' + genre.id + '/edit'" class="button is-primary is-small">
-                            Edit
-                        </router-link>
-                        <button v-on:click="deleteGenre(genre.id)"
-                                class="button is-danger is-small">Delete</button>
-                    </td>
-                </tr>
+                
+                <genre-item v-for="genre in genres" 
+                            v-bind:key="genre.id" 
+                            v-bind:genre="genre"></genre-item>
+
             </tbody>
             <tfoot>
                 <tr>
@@ -60,17 +54,16 @@
 
 <script>
 import Vuex from 'vuex'
+import GenreItem from './GenreItem'
 
 export default {
-    name: 'Genres',
+    name: 'genres',
+    components: {
+        'genre-item': GenreItem
+    },
     computed: {
         ...Vuex.mapState([
             'genres'
-        ])
-    },
-    methods: {
-        ...Vuex.mapActions([
-            'deleteGenre'
         ])
     }
 }
@@ -78,12 +71,6 @@ export default {
 
 <style lang="scss" scoped>
 .genres {
-    &__actions {
-        a {
-            margin-right: 0.25rem;
-        }
-    }
-
     &__add {
         text-align: right;
         margin: 1rem 0 2rem 0;

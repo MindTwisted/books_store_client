@@ -6,6 +6,8 @@
     </div>
 
     <div class="app__content">
+      <loader v-if="isLoading"></loader>
+
       <router-view/>
     </div>
 
@@ -14,8 +16,6 @@
 
     <register-modal v-if="registerModal.isVisible"></register-modal>
     <login-modal v-if="loginModal.isVisible"></login-modal>
-
-    <loader v-if="isLoading"></loader>
     
   </div>
 </template>
@@ -110,7 +110,8 @@ export default {
   padding-bottom: 7rem;
 
   &__content {
-    padding-top: 5rem;
+    min-height: 400px;
+    margin-top: 5rem;
     position: relative;
   }
 }
